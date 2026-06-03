@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>나에게 어울리는 직업 찾아보기</title>
+  <style>
+    :root {
+      --blue: #2563eb;
+      --blue-dark: #1e40af;
+      --bg: #f3f6fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --soft-blue: #eff6ff;
+      --green: #059669;
+      --amber: #d97706;
+      --purple: #7c3aed;
+      --red: #dc2626;
+      --chip: #eef2ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .app {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #2563eb, #60a5fa);
+      color: white;
+      border-radius: 28px;
+      padding: 36px 28px;
+      box-shadow: 0 18px 40px rgba(37, 99, 235, 0.25);
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 5vw, 42px);
+      letter-spacing: -0.04em;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 17px;
+      opacity: 0.95;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      margin-bottom: 16px;
+    }
+
+    .notice {
+      background: var(--soft-blue);
+      border: 1px solid #bfdbfe;
+      border-radius: 18px;
+      padding: 16px 18px;
+      color: #1e3a8a;
+      margin-top: 18px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 13px 22px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .primary {
+      background: var(--blue);
+      color: white;
+    }
+
+    .primary:hover {
+      background: var(--blue-dark);
+      transform: translateY(-1px);
+    }
+
+    .secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .secondary:hover {
+      background: #d1d5db;
+    }
+
+    .progress-wrap {
+      margin-bottom: 14px;
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .progress {
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--blue);
+      transition: width 0.2s;
+    }
+
+    .question {
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .question:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .question h3 {
+      font-size: 18px;
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .scale {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .scale label {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 13px;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .scale input {
+      display: none;
+    }
+
+    .scale input:checked + span {
+      display: block;
+      background: var(--blue);
+      color: white;
+      border-radius: 10px;
+      padding: 7px 4px;
+      font-weight: 700;
+    }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .type-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fafafa;
+    }
+
+    .type-card strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--blue);
+      color: white;
+      font-size: 22px;
+      font-weight: 800;
+      margin-right: 10px;
+    }
+
+    .result-title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .job-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .job-card {
+      border: 1px solid #dbeafe;
+      border-radius: 24px;
+      background: white;
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(30, 64, 175, 0.08);
+    }
+
+    .job-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 20px 22px;
+      background: linear-gradient(135deg, #eff6ff, #ffffff);
+      border-bottom: 1px solid #dbeafe;
+    }
+
+    .job-title-wrap {
+      min-width: 0;
+    }
+
+    .job-rank {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .job-card h3 {
+      margin: 0;
+      color: var(--blue-dark);
+      font-size: 25px;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+    }
+
+    .job-types {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: #3730a3;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .job-body {
+      padding: 18px 22px 20px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .info-box {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fafafa;
+    }
+
+    .info-label {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      color: #111827;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .wide-box {
+      grid-column: 1 / -1;
+      background: #f8fafc;
+    }
+
+    .prepare-box {
+      border-radius: 18px;
+      padding: 15px 16px;
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      color: #064e3b;
+    }
+
+    .prepare-box strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 640px) {
+      .scale {
+        grid-template-columns: 1fr;
+      }
+      .scale label {
+        text-align: left;
+        padding: 8px;
+      }
+      .scale input:checked + span {
+        padding: 8px 10px;
+      }
+      .job-head {
+        flex-direction: column;
+      }
+      .job-types {
+        justify-content: flex-start;
+      }
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      .job-card h3 {
+        font-size: 22px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+      .hero, .button-row, .progress-wrap {
+        display: none;
+      }
+      .card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <h1>나에게 어울리는 직업 찾아보기</h1>
+      <p>흥미와 성향을 바탕으로 진로를 탐색해 보는 중학생용 직업 추천 활동입니다.</p>
+    </section>
+
+    <section id="startScreen" class="card">
+      <h2>활동 안내</h2>
+      <p>
+        이 검사는 여러분의 흥미와 성향을 바탕으로 어울릴 수 있는 직업을 탐색해 보는 활동입니다.
+        결과는 정답이 아니라 진로 탐색을 위한 참고 자료입니다.
+      </p>
+      <div class="notice">
+        결과가 여러분의 미래를 결정하는 것은 아닙니다. “나는 어떤 활동을 좋아하는가?”를 생각해 보는 데 목적이 있습니다.
+      </div>
+      <div class="button-row">
+        <button class="primary" onclick="startSurvey()">검사 시작하기</button>
+      </div>
+    </section>
+
+    <section id="surveyScreen" class="card hidden">
+      <div class="progress-wrap">
+        <div class="progress-text">
+          <span>설문 진행률</span>
+          <span id="progressText">0 / 24</span>
+        </div>
+        <div class="progress">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <form id="surveyForm"></form>
+
+      <div class="button-row">
+        <button class="secondary" type="button" onclick="goStart()">처음으로</button>
+        <button class="primary" type="button" onclick="showResult()">결과 보기</button>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="hidden">
+      <div class="card">
+        <h2>검사 결과</h2>
+        <div id="typeResult"></div>
+        <p class="footer-note">
+          이 결과는 설문 응답을 바탕으로 한 참고 자료입니다. 실제 진로 선택은 흥미, 능력, 가치관, 학습 경험, 사회 변화 등을 함께 고려해야 합니다.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>추천 직업</h2>
+        <p class="footer-note">가장 잘 맞는 직업부터 5개를 보여줍니다. 직업명, 관련 전공, 자격, 연봉, 퇴직 나이, 준비 활동을 한눈에 비교할 수 있습니다.</p>
+        <div id="jobResult" class="job-list"></div>
+      </div>
+
+      <div class="button-row">
+        <button class="secondary" onclick="restart()">다시 검사하기</button>
+        <button class="primary" onclick="window.print()">결과 인쇄하기</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const types = {
+      R: { name: "현실형", desc: "도구, 기계, 신체 활동, 만들기와 조작을 선호합니다." },
+      I: { name: "탐구형", desc: "관찰, 분석, 조사, 문제 해결을 선호합니다." },
+      A: { name: "예술형", desc: "창작, 표현, 상상, 디자인 활동을 선호합니다." },
+      S: { name: "사회형", desc: "도움, 상담, 설명, 협력 활동을 선호합니다." },
+      E: { name: "진취형", desc: "발표, 설득, 리더십, 기획 활동을 선호합니다." },
+      C: { name: "관습형", desc: "정리, 기록, 계산, 체계적인 활동을 선호합니다." }
+    };
+
+    const questions = [
+      ["R", "손으로 직접 만들거나 조립하는 활동이 재미있다."],
+      ["R", "기계나 도구가 어떻게 작동하는지 궁금하다."],
+      ["R", "몸을 움직이며 하는 활동이 앉아서 하는 활동보다 좋다."],
+      ["R", "고장 난 물건을 고치거나 원인을 찾아보는 일이 흥미롭다."],
+
+      ["I", "왜 그런 일이 일어났는지 원인을 분석하는 것을 좋아한다."],
+      ["I", "과학, 수학, 사회 현상 등에 대해 조사하는 것이 재미있다."],
+      ["I", "어려운 문제를 차근차근 해결할 때 보람을 느낀다."],
+      ["I", "새로운 지식을 배우고 탐구하는 것을 좋아한다."],
+
+      ["A", "글, 그림, 음악, 영상 등으로 나를 표현하는 것을 좋아한다."],
+      ["A", "정해진 답보다 새로운 아이디어를 떠올리는 것이 좋다."],
+      ["A", "디자인, 꾸미기, 창작 활동에 관심이 있다."],
+      ["A", "남들과 다른 방식으로 생각해 보는 것이 재미있다."],
+
+      ["S", "친구의 고민을 들어주고 도와주는 것을 좋아한다."],
+      ["S", "다른 사람에게 설명하거나 가르치는 일이 잘 맞는 편이다."],
+      ["S", "협동 활동에서 사람들과 함께 문제를 해결하는 것이 좋다."],
+      ["S", "누군가에게 도움이 되었을 때 뿌듯함을 느낀다."],
+
+      ["E", "발표나 토론에서 내 의견을 말하는 것을 좋아한다."],
+      ["E", "친구들을 이끌거나 활동을 계획하는 역할에 관심이 있다."],
+      ["E", "새로운 일을 제안하거나 설득하는 데 흥미가 있다."],
+      ["E", "목표를 세우고 도전하는 활동을 좋아한다."],
+
+      ["C", "자료를 정리하거나 기록하는 일을 꼼꼼하게 하는 편이다."],
+      ["C", "규칙과 순서가 분명한 활동이 편하다."],
+      ["C", "돈, 숫자, 일정 등을 정확하게 관리하는 일에 관심이 있다."],
+      ["C", "계획표나 체크리스트를 활용하면 마음이 편하다."]
+    ];
+
+    const jobs = [
+      {
+        title: "교사",
+        types: ["S", "E"],
+        majors: "교육학과, 국어교육과, 수학교육과, 영어교육과 등",
+        qualification: "교원자격증",
+        salary: "약 3,000만~6,000만 원 이상, 경력과 호봉에 따라 차이",
+        retire: "공립 교원은 일반적으로 정년 62세",
+        prepare: "발표 활동, 독서, 친구 설명하기, 과목별 학습 역량 기르기"
+      },
+      {
+        title: "상담사",
+        types: ["S", "I"],
+        majors: "심리학과, 상담심리학과, 교육학과, 사회복지학과 등",
+        qualification: "상담 관련 자격, 청소년상담사 등",
+        salary: "약 2,800만~5,000만 원 이상, 근무 기관에 따라 차이",
+        retire: "기관 근무자는 60세 안팎, 개인 상담소는 더 길게 활동 가능",
+        prepare: "경청 연습, 또래 상담 활동, 심리와 인간관계 관련 독서"
+      },
+      {
+        title: "간호사",
+        types: ["S", "R"],
+        majors: "간호학과",
+        qualification: "간호사 국가시험 합격 및 면허",
+        salary: "약 3,500만~6,000만 원 이상, 병원 규모와 근무 형태에 따라 차이",
+        retire: "병원 근무는 50~60대까지 다양, 보건·교육 분야 전환 가능",
+        prepare: "생명과학 기초, 봉사 활동, 책임감과 체력 기르기"
+      },
+      {
+        title: "소프트웨어 개발자",
+        types: ["I", "R"],
+        majors: "컴퓨터공학과, 소프트웨어학과, 인공지능학과 등",
+        qualification: "필수 면허는 없으나 코딩 역량과 프로젝트 경험 중요",
+        salary: "약 3,500만~8,000만 원 이상, 실력과 회사에 따라 차이 큼",
+        retire: "정해진 퇴직 나이보다 역량과 경력 전환의 영향이 큼",
+        prepare: "코딩 체험, 수학·논리력 기르기, 작은 앱이나 게임 만들어 보기"
+      },
+      {
+        title: "데이터 분석가",
+        types: ["I", "C"],
+        majors: "통계학과, 데이터사이언스학과, 경영학과, 컴퓨터공학과 등",
+        qualification: "필수 면허는 없으나 통계, 코딩, 분석 도구 활용 능력 중요",
+        salary: "약 3,500만~7,000만 원 이상, 산업과 경력에 따라 차이",
+        retire: "정해진 퇴직 나이보다 전문성과 산업 변화의 영향이 큼",
+        prepare: "자료 해석, 엑셀·코딩 기초, 그래프 읽기, 수학적 사고 기르기"
+      },
+      {
+        title: "디자이너",
+        types: ["A", "R"],
+        majors: "시각디자인학과, 산업디자인학과, 영상디자인학과 등",
+        qualification: "필수 면허는 없으나 포트폴리오가 중요",
+        salary: "약 2,800만~6,000만 원 이상, 분야와 경력에 따라 차이",
+        retire: "프리랜서 또는 개인 작업으로 장기 활동 가능",
+        prepare: "그림, 사진, 영상, 디자인 도구 체험, 포트폴리오 만들기"
+      },
+      {
+        title: "콘텐츠 크리에이터",
+        types: ["A", "E"],
+        majors: "영상학과, 미디어커뮤니케이션학과, 광고홍보학과 등",
+        qualification: "필수 자격은 없으나 기획력, 표현력, 편집 능력 중요",
+        salary: "수입 편차가 매우 큼. 안정적인 평균값 제시가 어려움",
+        retire: "정해진 퇴직 나이 없음. 개인 역량과 플랫폼 변화의 영향이 큼",
+        prepare: "글쓰기, 영상 제작, 저작권 이해, 꾸준한 콘텐츠 기획 연습"
+      },
+      {
+        title: "기자",
+        types: ["I", "E"],
+        majors: "언론정보학과, 미디어커뮤니케이션학과, 정치외교학과 등",
+        qualification: "언론사 채용, 글쓰기와 취재 역량 중요",
+        salary: "약 3,000만~7,000만 원 이상, 언론사 규모와 경력에 따라 차이",
+        retire: "회사 정년은 대체로 60세 안팎, 이후 프리랜서 활동 가능",
+        prepare: "신문 읽기, 글쓰기, 토론, 사회 문제에 관심 갖기"
+      },
+      {
+        title: "변호사",
+        types: ["E", "I"],
+        majors: "학부 전공 다양, 이후 법학전문대학원 진학",
+        qualification: "법학전문대학원 졸업 후 변호사시험 합격",
+        salary: "수입 편차가 큼. 소속 기관과 경력에 따라 크게 다름",
+        retire: "정해진 퇴직 나이 없음. 개인 사무소 활동 가능",
+        prepare: "논리적 글쓰기, 독서, 토론, 사회와 법에 대한 관심 기르기"
+      },
+      {
+        title: "사회복지사",
+        types: ["S", "C"],
+        majors: "사회복지학과, 아동복지학과, 노인복지학과 등",
+        qualification: "사회복지사 자격",
+        salary: "약 2,700만~4,500만 원 이상, 기관과 경력에 따라 차이",
+        retire: "기관 근무자는 60세 안팎, 분야에 따라 장기 활동 가능",
+        prepare: "봉사 활동, 공동체 문제 관심 갖기, 공감과 책임감 기르기"
+      },
+      {
+        title: "회계사",
+        types: ["C", "I"],
+        majors: "경영학과, 회계학과, 경제학과 등",
+        qualification: "공인회계사 시험 합격",
+        salary: "약 4,000만~1억 원 이상, 경력과 소속에 따라 차이 큼",
+        retire: "법인 근무 후 개인 사무소 등으로 장기 활동 가능",
+        prepare: "수학, 경제, 꼼꼼한 기록 습관, 자료 분석 능력 기르기"
+      },
+      {
+        title: "공무원",
+        types: ["C", "S"],
+        majors: "전공 제한이 없는 경우가 많으나 행정학, 법학, 경제학 등 관련",
+        qualification: "공무원 공개경쟁채용시험 등",
+        salary: "직급과 호봉에 따라 차이. 안정적인 보수 체계",
+        retire: "일반적으로 정년 60세",
+        prepare: "꾸준한 학습 습관, 사회·법·행정에 대한 관심, 성실성 기르기"
+      },
+      {
+        title: "경영자·창업가",
+        types: ["E", "A"],
+        majors: "경영학과, 경제학과, 창업 관련 학과 등 다양",
+        qualification: "필수 자격은 없으나 기획력, 실행력, 문제 해결력 중요",
+        salary: "성공 여부에 따라 편차가 매우 큼",
+        retire: "정해진 퇴직 나이 없음",
+        prepare: "문제 발견하기, 작은 프로젝트 운영, 발표와 설득 연습"
+      },
+      {
+        title: "건축가",
+        types: ["A", "I"],
+        majors: "건축학과, 건축공학과 등",
+        qualification: "건축사 자격은 실무 경력과 시험 필요",
+        salary: "약 3,000만~7,000만 원 이상, 경력과 분야에 따라 차이",
+        retire: "사무소 운영 등으로 장기 활동 가능",
+        prepare: "공간 관찰, 스케치, 수학·과학 기초, 디자인 감각 기르기"
+      },
+      {
+        title: "자동차 정비사",
+        types: ["R", "C"],
+        majors: "자동차공학과, 기계공학과, 관련 특성화고·전문대 과정 등",
+        qualification: "자동차정비기능사, 산업기사 등",
+        salary: "약 2,800만~5,500만 원 이상, 경력과 사업장에 따라 차이",
+        retire: "기술 숙련도에 따라 장기 활동 가능",
+        prepare: "기계 구조 관심 갖기, 도구 사용 안전 익히기, 기술 체험 활동"
+      }
+    ];
+
+    const form = document.getElementById("surveyForm");
+
+    function renderQuestions() {
+      form.innerHTML = "";
+      questions.forEach((q, idx) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `
+          <h3>${idx + 1}. ${q[1]}</h3>
+          <div class="scale">
+            ${[5,4,3,2,1].map(value => `
+              <label>
+                <input type="radio" name="q${idx}" value="${value}" data-type="${q[0]}" onchange="updateProgress()" />
+                <span>${labelText(value)}</span>
+              </label>
+            `).join("")}
+          </div>
+        `;
+        form.appendChild(div);
+      });
+    }
+
+    function labelText(value) {
+      return {
+        5: "매우 그렇다",
+        4: "그렇다",
+        3: "보통이다",
+        2: "아니다",
+        1: "매우 아니다"
+      }[value];
+    }
+
+    function startSurvey() {
+      document.getElementById("startScreen").classList.add("hidden");
+      document.getElementById("surveyScreen").classList.remove("hidden");
+      renderQuestions();
+      updateProgress();
+      window.scrollTo(0, 0);
+    }
+
+    function goStart() {
+      document.getElementById("surveyScreen").classList.add("hidden");
+      document.getElementById("startScreen").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    }
+
+    function updateProgress() {
+      const answered = new Set([...document.querySelectorAll("input[type=radio]:checked")].map(input => input.name)).size;
+      document.getElementById("progressText").textContent = `${answered} / ${questions.length}`;
+      document.getElementById("progressBar").style.width = `${answered / questions.length * 100}%`;
+    }
+
+    function showResult() {
+      const checked = [...document.querySelectorAll("input[type=radio]:checked")];
+
+      if (checked.length < questions.length) {
+        alert("아직 응답하지 않은 문항이 있습니다.");
+        return;
+      }
+
+      const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+
+      checked.forEach(input => {
+        scores[input.dataset.type] += Number(input.value);
+      });
+
+      const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      const topTypes = sorted.slice(0, 2).map(item => item[0]);
+
+      const typeHtml = `
+        <div class="type-grid">
+          ${topTypes.map(code => `
+            <div class="type-card">
+              <div class="result-title">
+                <span class="badge">${code}</span>
+                <strong>${types[code].name}</strong>
+              </div>
+              <p>${types[code].desc}</p>
+              <p><strong>점수:</strong> ${scores[code]}점</p>
+            </div>
+          `).join("")}
+        </div>
+      `;
+
+      document.getElementById("typeResult").innerHTML = typeHtml;
+
+      const recommended = jobs
+        .map(job => {
+          const match = job.types.filter(t => topTypes.includes(t)).length;
+          return { ...job, match };
+        })
+        .filter(job => job.match > 0)
+        .sort((a, b) => b.match - a.match)
+        .slice(0, 5);
+
+      document.getElementById("jobResult").innerHTML = recommended.map((job, index) => `
+        <article class="job-card">
+          <div class="job-head">
+            <div class="job-title-wrap">
+              <span class="job-rank">추천 ${index + 1}</span>
+              <h3>${job.title}</h3>
+            </div>
+            <div class="job-types">
+              ${job.types.map(t => `<span class="chip">${types[t].name} ${t}</span>`).join("")}
+            </div>
+          </div>
+
+          <div class="job-body">
+            <div class="info-grid">
+              <div class="info-box wide-box">
+                <span class="info-label">관련 대학 전공</span>
+                <div class="info-value">${job.majors}</div>
+              </div>
+
+              <div class="info-box">
+                <span class="info-label">필요 자격 또는 역량</span>
+                <div class="info-value">${job.qualification}</div>
+              </div>
+
+              <div class="info-box">
+                <span class="info-label">평균 연봉 참고</span>
+                <div class="info-value">${job.salary}</div>
+              </div>
+
+              <div class="info-box">
+                <span class="info-label">평균 퇴직 나이 참고</span>
+                <div class="info-value">${job.retire}</div>
+              </div>
+            </div>
+
+            <div class="prepare-box">
+              <strong>중학생 때 준비하면 좋은 활동</strong>
+              <div>${job.prepare}</div>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      document.getElementById("surveyScreen").classList.add("hidden");
+      document.getElementById("resultScreen").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    }
+
+    function restart() {
+      document.getElementById("resultScreen").classList.add("hidden");
+      document.getElementById("startScreen").classList.remove("hidden");
+      form.innerHTML = "";
+      window.scrollTo(0, 0);
+    }
+  </script>
+</body>
+</html>

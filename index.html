@@ -14,11 +14,6 @@
       --muted: #6b7280;
       --line: #e5e7eb;
       --soft-blue: #eff6ff;
-      --green: #059669;
-      --amber: #d97706;
-      --purple: #7c3aed;
-      --red: #dc2626;
-      --chip: #eef2ff;
     }
 
     * {
@@ -228,121 +223,235 @@
 
     .job-list {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
     }
 
     .job-card {
-      border: 1px solid #dbeafe;
-      border-radius: 24px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
       background: white;
-      overflow: hidden;
-      box-shadow: 0 10px 28px rgba(30, 64, 175, 0.08);
-    }
-
-    .job-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: flex-start;
-      padding: 20px 22px;
-      background: linear-gradient(135deg, #eff6ff, #ffffff);
-      border-bottom: 1px solid #dbeafe;
-    }
-
-    .job-title-wrap {
-      min-width: 0;
-    }
-
-    .job-rank {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: var(--blue);
-      color: white;
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 8px;
     }
 
     .job-card h3 {
-      margin: 0;
+      margin: 0 0 8px;
       color: var(--blue-dark);
-      font-size: 25px;
-      letter-spacing: -0.03em;
-      line-height: 1.25;
     }
 
-    .job-types {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: flex-end;
+    .job-card dl {
+      margin: 0;
     }
 
-    .chip {
-      display: inline-flex;
-      align-items: center;
+    .job-card dt {
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    .job-card dd {
+      margin: 2px 0 0;
+      color: #374151;
+    }
+
+    .ai-badge {
+      display: inline-block;
       padding: 6px 10px;
       border-radius: 999px;
-      background: var(--chip);
-      color: #3730a3;
-      font-size: 13px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .job-body {
-      padding: 18px 22px 20px;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .info-box {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px;
-      background: #fafafa;
-    }
-
-    .info-label {
-      display: block;
-      color: var(--muted);
       font-size: 13px;
       font-weight: 800;
-      margin-bottom: 5px;
+      margin-top: 2px;
     }
 
-    .info-value {
-      color: #111827;
-      font-weight: 700;
-      line-height: 1.45;
+    .ai-very-low { background: #dcfce7; color: #166534; }
+    .ai-low { background: #e0f2fe; color: #075985; }
+    .ai-medium { background: #fef3c7; color: #92400e; }
+    .ai-high { background: #ffedd5; color: #9a3412; }
+    .ai-very-high { background: #fee2e2; color: #991b1b; }
+
+    .ai-reason {
+      margin-top: 6px;
+      color: #374151;
+      font-size: 14px;
     }
 
-    .wide-box {
-      grid-column: 1 / -1;
-      background: #f8fafc;
+
+    .result-stage {
+      position: relative;
+      overflow: hidden;
     }
 
-    .prepare-box {
-      border-radius: 18px;
-      padding: 15px 16px;
-      background: #ecfdf5;
-      border: 1px solid #bbf7d0;
-      color: #064e3b;
+    .result-stage::before {
+      content: "";
+      position: absolute;
+      inset: -80px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.12), transparent 28%),
+        radial-gradient(circle at 80% 10%, rgba(124, 58, 237, 0.12), transparent 25%),
+        radial-gradient(circle at 50% 90%, rgba(5, 150, 105, 0.12), transparent 28%);
+      pointer-events: none;
     }
 
-    .prepare-box strong {
-      display: block;
-      margin-bottom: 4px;
+    .analyze-box {
+      position: relative;
+      text-align: center;
+      padding: 32px 20px;
     }
+
+    .spinner {
+      width: 66px;
+      height: 66px;
+      border: 7px solid #dbeafe;
+      border-top: 7px solid var(--blue);
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      animation: spin 1s linear infinite;
+    }
+
+    .analyze-title {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: var(--blue-dark);
+      margin-bottom: 6px;
+    }
+
+    .analyze-sub {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .level-banner {
+      position: relative;
+      background: linear-gradient(135deg, #111827, #1e3a8a);
+      color: white;
+      border-radius: 24px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 16px 34px rgba(30, 58, 138, 0.2);
+      overflow: hidden;
+      animation: popIn 0.55s ease both;
+    }
+
+    .level-banner::after {
+      content: "✦";
+      position: absolute;
+      top: -12px;
+      right: 24px;
+      font-size: 90px;
+      opacity: 0.18;
+      transform: rotate(16deg);
+    }
+
+    .level-label {
+      display: inline-flex;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .level-title {
+      margin: 0;
+      font-size: clamp(26px, 5vw, 38px);
+      line-height: 1.18;
+      letter-spacing: -0.04em;
+    }
+
+    .level-desc {
+      margin: 10px 0 0;
+      opacity: 0.9;
+    }
+
+    .type-card {
+      animation: slideUp 0.55s ease both;
+    }
+
+    .type-card:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+
+    .job-card {
+      transform-origin: center;
+      animation: cardReveal 0.55s ease both;
+    }
+
+    .job-card:nth-child(1) { animation-delay: 0.05s; }
+    .job-card:nth-child(2) { animation-delay: 0.18s; }
+    .job-card:nth-child(3) { animation-delay: 0.31s; }
+    .job-card:nth-child(4) { animation-delay: 0.44s; }
+    .job-card:nth-child(5) { animation-delay: 0.57s; }
+
+    .reward {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: #fef3c7;
+      color: #92400e;
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    .sparkle {
+      position: fixed;
+      top: -20px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+      opacity: 0.8;
+      animation: fall 1.8s ease-in forwards;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .shake-soft {
+      animation: shakeSoft 0.35s ease;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.94); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cardReveal {
+      0% { opacity: 0; transform: translateY(26px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.95; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes shakeSoft {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
 
     .hidden {
       display: none;
@@ -364,18 +473,6 @@
       }
       .scale input:checked + span {
         padding: 8px 10px;
-      }
-      .job-head {
-        flex-direction: column;
-      }
-      .job-types {
-        justify-content: flex-start;
-      }
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
-      .job-card h3 {
-        font-size: 22px;
       }
     }
 
@@ -433,9 +530,10 @@
       </div>
     </section>
 
-    <section id="resultScreen" class="hidden">
+    <section id="resultScreen" class="hidden result-stage">
       <div class="card">
         <h2>검사 결과</h2>
+        <div id="levelResult"></div>
         <div id="typeResult"></div>
         <p class="footer-note">
           이 결과는 설문 응답을 바탕으로 한 참고 자료입니다. 실제 진로 선택은 흥미, 능력, 가치관, 학습 경험, 사회 변화 등을 함께 고려해야 합니다.
@@ -444,7 +542,6 @@
 
       <div class="card">
         <h2>추천 직업</h2>
-        <p class="footer-note">가장 잘 맞는 직업부터 5개를 보여줍니다. 직업명, 관련 전공, 자격, 연봉, 퇴직 나이, 준비 활동을 한눈에 비교할 수 있습니다.</p>
         <div id="jobResult" class="job-list"></div>
       </div>
 
@@ -497,143 +594,1412 @@
       ["C", "계획표나 체크리스트를 활용하면 마음이 편하다."]
     ];
 
+    function aiClass(level) {
+      if (level === "매우 낮음") return "ai-very-low";
+      if (level === "낮음") return "ai-low";
+      if (level === "보통") return "ai-medium";
+      if (level === "높음") return "ai-high";
+      if (level === "매우 높음") return "ai-very-high";
+      return "ai-medium";
+    }
+
     const jobs = [
       {
-        title: "교사",
-        types: ["S", "E"],
-        majors: "교육학과, 국어교육과, 수학교육과, 영어교육과 등",
-        qualification: "교원자격증",
-        salary: "약 3,000만~6,000만 원 이상, 경력과 호봉에 따라 차이",
-        retire: "공립 교원은 일반적으로 정년 62세",
-        prepare: "발표 활동, 독서, 친구 설명하기, 과목별 학습 역량 기르기"
+            "title": "교사",
+            "types": [
+                  "S",
+                  "E"
+            ],
+            "majors": "교육학과, 교과교육과 등",
+            "qualification": "교원자격증, 임용시험 또는 사립학교 채용",
+            "salary": "경력과 호봉에 따라 차이. 약 3,000만~6,000만 원 이상",
+            "retire": "공립 교원은 일반적으로 정년 62세",
+            "aiImpact": "낮음",
+            "aiReason": "AI가 자료 제작을 도울 수 있지만 학생 지도와 관계 형성은 인간 교사의 역할이 큽니다.",
+            "prepare": "발표, 독서, 친구에게 설명하기, 관심 과목 깊이 공부하기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "상담사",
-        types: ["S", "I"],
-        majors: "심리학과, 상담심리학과, 교육학과, 사회복지학과 등",
-        qualification: "상담 관련 자격, 청소년상담사 등",
-        salary: "약 2,800만~5,000만 원 이상, 근무 기관에 따라 차이",
-        retire: "기관 근무자는 60세 안팎, 개인 상담소는 더 길게 활동 가능",
-        prepare: "경청 연습, 또래 상담 활동, 심리와 인간관계 관련 독서"
+            "title": "상담사",
+            "types": [
+                  "S",
+                  "I"
+            ],
+            "majors": "심리학과, 상담심리학과, 교육학과 등",
+            "qualification": "상담 관련 자격, 청소년상담사 등",
+            "salary": "기관과 경력에 따라 차이. 약 2,800만~5,000만 원 이상",
+            "retire": "기관 근무자는 60세 안팎, 개인 상담소는 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "공감, 신뢰 관계, 정서적 판단은 AI가 쉽게 대체하기 어렵습니다.",
+            "prepare": "경청 연습, 또래 상담, 심리와 인간관계 관련 독서",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "간호사",
-        types: ["S", "R"],
-        majors: "간호학과",
-        qualification: "간호사 국가시험 합격 및 면허",
-        salary: "약 3,500만~6,000만 원 이상, 병원 규모와 근무 형태에 따라 차이",
-        retire: "병원 근무는 50~60대까지 다양, 보건·교육 분야 전환 가능",
-        prepare: "생명과학 기초, 봉사 활동, 책임감과 체력 기르기"
+            "title": "간호사",
+            "types": [
+                  "S",
+                  "R"
+            ],
+            "majors": "간호학과",
+            "qualification": "간호사 국가시험 합격 및 면허",
+            "salary": "병원 규모와 근무 형태에 따라 차이. 약 3,500만~6,000만 원 이상",
+            "retire": "병원, 보건, 교육 분야 등으로 다양하게 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "환자 돌봄과 응급 대응, 공감적 의사소통은 인간의 역할이 중요합니다.",
+            "prepare": "생명과학 기초, 봉사 활동, 책임감과 체력 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "소프트웨어 개발자",
-        types: ["I", "R"],
-        majors: "컴퓨터공학과, 소프트웨어학과, 인공지능학과 등",
-        qualification: "필수 면허는 없으나 코딩 역량과 프로젝트 경험 중요",
-        salary: "약 3,500만~8,000만 원 이상, 실력과 회사에 따라 차이 큼",
-        retire: "정해진 퇴직 나이보다 역량과 경력 전환의 영향이 큼",
-        prepare: "코딩 체험, 수학·논리력 기르기, 작은 앱이나 게임 만들어 보기"
+            "title": "소프트웨어 개발자",
+            "types": [
+                  "I",
+                  "R"
+            ],
+            "majors": "컴퓨터공학과, 소프트웨어학과, 인공지능학과 등",
+            "qualification": "필수 면허는 없으나 코딩 역량과 프로젝트 경험 중요",
+            "salary": "회사와 실력에 따라 차이. 약 3,500만~8,000만 원 이상",
+            "retire": "정해진 퇴직 나이보다 역량과 경력 전환의 영향이 큼",
+            "aiImpact": "보통",
+            "aiReason": "AI가 코드 작성을 돕지만 문제 정의와 설계 능력은 여전히 중요합니다.",
+            "prepare": "코딩 체험, 수학·논리력 기르기, 작은 앱이나 게임 만들어 보기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "데이터 분석가",
-        types: ["I", "C"],
-        majors: "통계학과, 데이터사이언스학과, 경영학과, 컴퓨터공학과 등",
-        qualification: "필수 면허는 없으나 통계, 코딩, 분석 도구 활용 능력 중요",
-        salary: "약 3,500만~7,000만 원 이상, 산업과 경력에 따라 차이",
-        retire: "정해진 퇴직 나이보다 전문성과 산업 변화의 영향이 큼",
-        prepare: "자료 해석, 엑셀·코딩 기초, 그래프 읽기, 수학적 사고 기르기"
+            "title": "데이터 분석가",
+            "types": [
+                  "I",
+                  "C"
+            ],
+            "majors": "통계학과, 데이터사이언스학과, 경영학과, 컴퓨터공학과 등",
+            "qualification": "통계, 코딩, 분석 도구 활용 능력 중요",
+            "salary": "산업과 경력에 따라 차이. 약 3,500만~7,000만 원 이상",
+            "retire": "전문성과 산업 변화의 영향이 큼",
+            "aiImpact": "보통",
+            "aiReason": "AI가 패턴 분석을 돕지만 결과 해석과 의사결정 연결은 인간의 판단이 필요합니다.",
+            "prepare": "자료 해석, 엑셀·코딩 기초, 그래프 읽기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "디자이너",
-        types: ["A", "R"],
-        majors: "시각디자인학과, 산업디자인학과, 영상디자인학과 등",
-        qualification: "필수 면허는 없으나 포트폴리오가 중요",
-        salary: "약 2,800만~6,000만 원 이상, 분야와 경력에 따라 차이",
-        retire: "프리랜서 또는 개인 작업으로 장기 활동 가능",
-        prepare: "그림, 사진, 영상, 디자인 도구 체험, 포트폴리오 만들기"
+            "title": "디자이너",
+            "types": [
+                  "A",
+                  "R"
+            ],
+            "majors": "시각디자인학과, 산업디자인학과, 영상디자인학과 등",
+            "qualification": "포트폴리오와 디자인 도구 활용 능력 중요",
+            "salary": "분야와 경력에 따라 차이. 약 2,800만~6,000만 원 이상",
+            "retire": "프리랜서 또는 개인 작업으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 시안을 만들 수 있지만 감성, 기획, 최종 판단은 디자이너의 역량이 중요합니다.",
+            "prepare": "그림, 사진, 영상, 디자인 도구 체험, 포트폴리오 만들기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "콘텐츠 크리에이터",
-        types: ["A", "E"],
-        majors: "영상학과, 미디어커뮤니케이션학과, 광고홍보학과 등",
-        qualification: "필수 자격은 없으나 기획력, 표현력, 편집 능력 중요",
-        salary: "수입 편차가 매우 큼. 안정적인 평균값 제시가 어려움",
-        retire: "정해진 퇴직 나이 없음. 개인 역량과 플랫폼 변화의 영향이 큼",
-        prepare: "글쓰기, 영상 제작, 저작권 이해, 꾸준한 콘텐츠 기획 연습"
+            "title": "콘텐츠 크리에이터",
+            "types": [
+                  "A",
+                  "E"
+            ],
+            "majors": "영상학과, 미디어커뮤니케이션학과, 광고홍보학과 등",
+            "qualification": "기획력, 표현력, 편집 능력 중요",
+            "salary": "수입 편차가 매우 큼. 안정적 평균값 제시가 어려움",
+            "retire": "정해진 퇴직 나이 없음. 플랫폼 변화의 영향이 큼",
+            "aiImpact": "보통",
+            "aiReason": "AI가 제작을 보조하지만 독창적인 관점과 시청자 소통 능력이 중요합니다.",
+            "prepare": "글쓰기, 영상 제작, 저작권 이해, 꾸준한 콘텐츠 기획",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "기자",
-        types: ["I", "E"],
-        majors: "언론정보학과, 미디어커뮤니케이션학과, 정치외교학과 등",
-        qualification: "언론사 채용, 글쓰기와 취재 역량 중요",
-        salary: "약 3,000만~7,000만 원 이상, 언론사 규모와 경력에 따라 차이",
-        retire: "회사 정년은 대체로 60세 안팎, 이후 프리랜서 활동 가능",
-        prepare: "신문 읽기, 글쓰기, 토론, 사회 문제에 관심 갖기"
+            "title": "기자",
+            "types": [
+                  "I",
+                  "E"
+            ],
+            "majors": "언론정보학과, 미디어커뮤니케이션학과, 정치외교학과 등",
+            "qualification": "언론사 채용, 취재와 글쓰기 역량 중요",
+            "salary": "언론사 규모와 경력에 따라 차이. 약 3,000만~7,000만 원 이상",
+            "retire": "회사 정년은 대체로 60세 안팎, 이후 프리랜서 가능",
+            "aiImpact": "높음",
+            "aiReason": "AI가 기사 초안을 만들 수 있어 현장 취재와 검증 능력이 더 중요해집니다.",
+            "prepare": "신문 읽기, 글쓰기, 토론, 사회 문제에 관심 갖기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "변호사",
-        types: ["E", "I"],
-        majors: "학부 전공 다양, 이후 법학전문대학원 진학",
-        qualification: "법학전문대학원 졸업 후 변호사시험 합격",
-        salary: "수입 편차가 큼. 소속 기관과 경력에 따라 크게 다름",
-        retire: "정해진 퇴직 나이 없음. 개인 사무소 활동 가능",
-        prepare: "논리적 글쓰기, 독서, 토론, 사회와 법에 대한 관심 기르기"
+            "title": "변호사",
+            "types": [
+                  "E",
+                  "I"
+            ],
+            "majors": "법학전문대학원 진학 전 학부 전공 다양",
+            "qualification": "법학전문대학원 졸업 후 변호사시험 합격",
+            "salary": "소속 기관과 경력에 따라 수입 편차가 큼",
+            "retire": "정해진 퇴직 나이 없음. 개인 사무소 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 판례 검색을 돕지만 법적 전략과 의뢰인 이해는 인간 전문가의 역할이 큽니다.",
+            "prepare": "논리적 글쓰기, 독서, 토론, 사회와 법에 대한 관심",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "사회복지사",
-        types: ["S", "C"],
-        majors: "사회복지학과, 아동복지학과, 노인복지학과 등",
-        qualification: "사회복지사 자격",
-        salary: "약 2,700만~4,500만 원 이상, 기관과 경력에 따라 차이",
-        retire: "기관 근무자는 60세 안팎, 분야에 따라 장기 활동 가능",
-        prepare: "봉사 활동, 공동체 문제 관심 갖기, 공감과 책임감 기르기"
+            "title": "사회복지사",
+            "types": [
+                  "S",
+                  "C"
+            ],
+            "majors": "사회복지학과, 아동복지학과, 노인복지학과 등",
+            "qualification": "사회복지사 자격",
+            "salary": "기관과 경력에 따라 차이. 약 2,700만~4,500만 원 이상",
+            "retire": "기관 근무자는 60세 안팎, 분야에 따라 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "사람을 직접 만나 지원하고 조정하는 일은 공감과 책임감이 중요합니다.",
+            "prepare": "봉사 활동, 공동체 문제 관심, 공감과 책임감 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "회계사",
-        types: ["C", "I"],
-        majors: "경영학과, 회계학과, 경제학과 등",
-        qualification: "공인회계사 시험 합격",
-        salary: "약 4,000만~1억 원 이상, 경력과 소속에 따라 차이 큼",
-        retire: "법인 근무 후 개인 사무소 등으로 장기 활동 가능",
-        prepare: "수학, 경제, 꼼꼼한 기록 습관, 자료 분석 능력 기르기"
+            "title": "회계사",
+            "types": [
+                  "C",
+                  "I"
+            ],
+            "majors": "경영학과, 회계학과, 경제학과 등",
+            "qualification": "공인회계사 시험 합격",
+            "salary": "경력과 소속에 따라 차이. 약 4,000만~1억 원 이상",
+            "retire": "법인 근무 후 개인 사무소 등으로 장기 활동 가능",
+            "aiImpact": "높음",
+            "aiReason": "자동화가 계산과 보고서 작성을 돕기 때문에 해석과 자문 능력이 더 중요해집니다.",
+            "prepare": "수학, 경제, 꼼꼼한 기록 습관, 자료 분석 능력",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "공무원",
-        types: ["C", "S"],
-        majors: "전공 제한이 없는 경우가 많으나 행정학, 법학, 경제학 등 관련",
-        qualification: "공무원 공개경쟁채용시험 등",
-        salary: "직급과 호봉에 따라 차이. 안정적인 보수 체계",
-        retire: "일반적으로 정년 60세",
-        prepare: "꾸준한 학습 습관, 사회·법·행정에 대한 관심, 성실성 기르기"
+            "title": "공무원",
+            "types": [
+                  "C",
+                  "S"
+            ],
+            "majors": "행정학, 법학, 경제학 등 관련 전공 또는 전공 제한 없음",
+            "qualification": "공무원 공개경쟁채용시험 등",
+            "salary": "직급과 호봉에 따라 차이. 안정적인 보수 체계",
+            "retire": "일반적으로 정년 60세",
+            "aiImpact": "보통",
+            "aiReason": "AI가 문서와 민원 분류를 돕지만 공정한 판단과 책임 있는 행정은 인간의 역할이 필요합니다.",
+            "prepare": "꾸준한 학습 습관, 사회·법·행정에 대한 관심",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "경영자·창업가",
-        types: ["E", "A"],
-        majors: "경영학과, 경제학과, 창업 관련 학과 등 다양",
-        qualification: "필수 자격은 없으나 기획력, 실행력, 문제 해결력 중요",
-        salary: "성공 여부에 따라 편차가 매우 큼",
-        retire: "정해진 퇴직 나이 없음",
-        prepare: "문제 발견하기, 작은 프로젝트 운영, 발표와 설득 연습"
+            "title": "경영자·창업가",
+            "types": [
+                  "E",
+                  "A"
+            ],
+            "majors": "경영학과, 경제학과, 창업 관련 학과 등 다양",
+            "qualification": "필수 자격은 없으나 기획력과 실행력 중요",
+            "salary": "성공 여부에 따라 편차가 매우 큼",
+            "retire": "정해진 퇴직 나이 없음",
+            "aiImpact": "매우 낮음",
+            "aiReason": "문제를 발견하고 사람을 설득하며 책임 있게 결정하는 일은 인간의 역할이 큽니다.",
+            "prepare": "작은 프로젝트 운영, 발표와 설득 연습",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "건축가",
-        types: ["A", "I"],
-        majors: "건축학과, 건축공학과 등",
-        qualification: "건축사 자격은 실무 경력과 시험 필요",
-        salary: "약 3,000만~7,000만 원 이상, 경력과 분야에 따라 차이",
-        retire: "사무소 운영 등으로 장기 활동 가능",
-        prepare: "공간 관찰, 스케치, 수학·과학 기초, 디자인 감각 기르기"
+            "title": "건축가",
+            "types": [
+                  "A",
+                  "I"
+            ],
+            "majors": "건축학과, 건축공학과 등",
+            "qualification": "건축사 자격은 실무 경력과 시험 필요",
+            "salary": "경력과 분야에 따라 차이. 약 3,000만~7,000만 원 이상",
+            "retire": "사무소 운영 등으로 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "설계 보조는 가능하지만 공간의 목적, 안전, 생활 방식에 대한 종합 판단이 중요합니다.",
+            "prepare": "공간 관찰, 스케치, 수학·과학 기초, 디자인 감각",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       },
       {
-        title: "자동차 정비사",
-        types: ["R", "C"],
-        majors: "자동차공학과, 기계공학과, 관련 특성화고·전문대 과정 등",
-        qualification: "자동차정비기능사, 산업기사 등",
-        salary: "약 2,800만~5,500만 원 이상, 경력과 사업장에 따라 차이",
-        retire: "기술 숙련도에 따라 장기 활동 가능",
-        prepare: "기계 구조 관심 갖기, 도구 사용 안전 익히기, 기술 체험 활동"
+            "title": "자동차 정비사",
+            "types": [
+                  "R",
+                  "C"
+            ],
+            "majors": "자동차공학과, 기계공학과, 특성화고·전문대 관련 과정 등",
+            "qualification": "자동차정비기능사, 산업기사 등",
+            "salary": "경력과 사업장에 따라 차이. 약 2,800만~5,500만 원 이상",
+            "retire": "기술 숙련도에 따라 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "진단 보조는 가능하지만 실제 정비와 안전 판단은 현장 기술이 필요합니다.",
+            "prepare": "기계 구조 관심, 도구 사용 안전 익히기, 기술 체험",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "운동선수",
+            "types": [
+                  "R",
+                  "E"
+            ],
+            "majors": "체육학과, 스포츠과학과, 관련 학교 운동부 및 실업팀 과정 등",
+            "qualification": "종목별 훈련 경력, 대회 실적, 프로 또는 실업팀 입단",
+            "salary": "종목과 실력에 따라 수입 편차가 매우 큼",
+            "retire": "선수 생활은 종목별로 차이가 크며 이후 지도자·해설자 등으로 전환 가능",
+            "aiImpact": "낮음",
+            "aiReason": "경기력, 체력, 순간 판단, 팀워크는 AI가 직접 대체하기 어렵습니다.",
+            "prepare": "꾸준한 운동, 기초 체력, 스포츠맨십, 대회 경험 쌓기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "과학자",
+            "types": [
+                  "I",
+                  "R"
+            ],
+            "majors": "자연과학계열, 공학계열, 대학원 연구 과정 등",
+            "qualification": "연구 역량, 실험·분석 능력, 석사·박사 학위가 필요한 경우 많음",
+            "salary": "분야와 소속 기관에 따라 차이. 약 3,500만~7,000만 원 이상",
+            "retire": "연구기관·대학·기업 연구소 등에서 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "AI가 분석을 돕지만 새로운 가설을 세우고 실험을 설계하는 능력은 인간 연구자의 역할이 큽니다.",
+            "prepare": "과학 실험, 관찰 기록, 수학·과학 기초 다지기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "물리치료사",
+            "types": [
+                  "S",
+                  "R"
+            ],
+            "majors": "물리치료학과",
+            "qualification": "물리치료사 국가시험 합격 및 면허",
+            "salary": "근무 기관과 경력에 따라 차이. 약 3,000만~5,000만 원 이상",
+            "retire": "병원, 재활센터, 스포츠 분야 등으로 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "환자의 상태를 직접 관찰하고 회복을 돕는 신체적·정서적 상호작용이 중요합니다.",
+            "prepare": "생명과학, 체육, 봉사 활동, 해부학과 재활 분야 관심 갖기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "연예인",
+            "types": [
+                  "A",
+                  "E"
+            ],
+            "majors": "연극영화과, 실용음악과, 방송연예과 등 또는 다양한 경로",
+            "qualification": "오디션, 기획사 훈련, 실력과 대중성 중요",
+            "salary": "활동 분야와 인지도에 따라 수입 편차가 매우 큼",
+            "retire": "정해진 퇴직 나이 없음. 활동성과 대중성의 영향이 큼",
+            "aiImpact": "보통",
+            "aiReason": "AI가 콘텐츠 제작을 돕지만 무대 매력, 표현력, 팬과의 소통은 인간의 개성이 중요합니다.",
+            "prepare": "노래, 연기, 춤, 발표 연습, 꾸준한 자기관리",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "레크리에이션 강사",
+            "types": [
+                  "S",
+                  "E"
+            ],
+            "majors": "레크리에이션학과, 체육학과, 청소년지도 관련 학과 등",
+            "qualification": "레크리에이션 지도 관련 자격, 진행 능력 중요",
+            "salary": "행사와 기관에 따라 편차가 큼. 약 2,500만~4,500만 원 이상",
+            "retire": "프리랜서 또는 기관 소속으로 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "현장의 분위기를 읽고 사람들을 참여시키는 능력은 인간 진행자의 강점입니다.",
+            "prepare": "발표, 놀이 기획, 리더십, 사람들과 협력하기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "조향사",
+            "types": [
+                  "A",
+                  "I"
+            ],
+            "majors": "화학과, 향장학과, 화장품과학과, 식품향료 관련 전공 등",
+            "qualification": "후각 훈련, 화학 지식, 향료 회사 실무 경험 중요",
+            "salary": "회사와 경력에 따라 차이. 평균값은 제시가 어려움",
+            "retire": "전문성이 쌓이면 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 향 조합 데이터를 도울 수 있지만 감각과 브랜드 감성은 인간의 판단이 중요합니다.",
+            "prepare": "향에 관심 갖기, 화학 기초, 관찰 기록, 감각 표현 연습",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "요리사",
+            "types": [
+                  "R",
+                  "A"
+            ],
+            "majors": "조리학과, 호텔조리과, 외식조리 관련 학과 등",
+            "qualification": "조리기능사 등 자격, 실무 경험과 위생 지식 중요",
+            "salary": "업장과 경력에 따라 차이. 약 2,800만~5,500만 원 이상",
+            "retire": "기술과 경력에 따라 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "자동화 조리기구가 늘어도 맛 조절, 메뉴 개발, 현장 운영은 인간의 감각이 중요합니다.",
+            "prepare": "요리 실습, 위생 습관, 맛 관찰, 팀워크 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "프로게이머",
+            "types": [
+                  "R",
+                  "I"
+            ],
+            "majors": "전공 제한은 적으나 게임 관련 학과, e스포츠학과 등 가능",
+            "qualification": "높은 게임 실력, 전략 이해, 팀 훈련, 대회 성적 중요",
+            "salary": "리그와 실력에 따라 수입 편차가 매우 큼",
+            "retire": "선수 생활은 비교적 짧을 수 있으며 코치·해설·기획자로 전환 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 전략 분석을 돕지만 실시간 판단, 집중력, 팀 호흡은 선수의 역량입니다.",
+            "prepare": "게임 시간 관리, 전략 분석, 체력 관리, 협동과 소통 연습",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "경찰",
+            "types": [
+                  "S",
+                  "R"
+            ],
+            "majors": "경찰행정학과, 법학과, 행정학과 등",
+            "qualification": "경찰공무원 시험, 체력검정, 면접 등",
+            "salary": "직급과 호봉에 따라 차이. 안정적인 보수 체계",
+            "retire": "일반적으로 공무원 정년 기준 적용",
+            "aiImpact": "낮음",
+            "aiReason": "AI가 범죄 분석을 돕지만 현장 판단, 시민 보호, 책임 있는 법 집행은 인간의 역할입니다.",
+            "prepare": "체력 기르기, 법과 사회 문제 관심, 책임감과 공정성 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "의사",
+            "types": [
+                  "I",
+                  "S"
+            ],
+            "majors": "의예과·의학과",
+            "qualification": "의사 국가시험 합격 및 면허, 전문의 과정 선택 가능",
+            "salary": "전공과 근무 형태에 따라 수입 편차가 큼",
+            "retire": "전문성에 따라 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "AI가 진단을 보조하지만 환자 상태를 종합 판단하고 치료 책임을 지는 일은 의사의 역할입니다.",
+            "prepare": "생명과학, 과학 탐구, 독서, 봉사와 책임감 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "정치인",
+            "types": [
+                  "E",
+                  "S"
+            ],
+            "majors": "정치외교학과, 행정학과, 법학과 등 다양",
+            "qualification": "선거, 정당 활동, 정책 이해와 대중 소통 능력 중요",
+            "salary": "직위와 활동에 따라 차이. 평균값 제시가 어려움",
+            "retire": "정해진 퇴직 나이 없음. 선거와 활동 성과의 영향이 큼",
+            "aiImpact": "매우 낮음",
+            "aiReason": "사람을 대표하고 사회적 갈등을 조정하며 책임 있게 결정하는 일은 인간의 역할입니다.",
+            "prepare": "토론, 발표, 사회 문제 탐구, 공익과 책임에 대해 생각하기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "메이크업 아티스트",
+            "types": [
+                  "A",
+                  "R"
+            ],
+            "majors": "뷰티미용학과, 메이크업디자인과 등",
+            "qualification": "미용사 면허, 포트폴리오, 현장 실무 능력 중요",
+            "salary": "분야와 경력에 따라 차이. 약 2,500만~5,000만 원 이상",
+            "retire": "프리랜서 또는 숍 운영으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 스타일 추천을 할 수 있지만 얼굴형과 분위기에 맞춘 손기술과 감각은 중요합니다.",
+            "prepare": "색채 감각, 미술 활동, 위생 습관, 포트폴리오 만들기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "미용사",
+            "types": [
+                  "A",
+                  "R"
+            ],
+            "majors": "뷰티미용학과, 헤어디자인과 등",
+            "qualification": "미용사 면허, 실무 기술과 고객 응대 능력 중요",
+            "salary": "경력과 매장에 따라 차이. 약 2,500만~5,000만 원 이상",
+            "retire": "기술 숙련과 창업을 통해 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "고객과 직접 소통하고 손기술로 스타일을 완성하는 능력은 인간의 역할이 큽니다.",
+            "prepare": "손기술 연습, 미적 감각, 고객 응대 태도, 위생 습관",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "댄서",
+            "types": [
+                  "A",
+                  "R"
+            ],
+            "majors": "실용무용과, 무용학과, 공연예술 관련 학과 등",
+            "qualification": "무용 실력, 오디션, 공연 경험 중요",
+            "salary": "활동 분야와 인지도에 따라 수입 편차가 큼",
+            "retire": "공연, 지도, 안무 등으로 전환 가능",
+            "aiImpact": "낮음",
+            "aiReason": "몸의 표현력, 무대 감각, 즉흥성과 협업은 AI가 직접 대체하기 어렵습니다.",
+            "prepare": "기초 체력, 꾸준한 춤 연습, 공연 경험, 자기관리",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "승무원",
+            "types": [
+                  "S",
+                  "E"
+            ],
+            "majors": "항공서비스학과, 관광학과, 어문계열 등",
+            "qualification": "항공사 채용, 외국어 능력, 서비스 태도, 안전 교육 중요",
+            "salary": "항공사와 경력에 따라 차이. 약 3,000만~6,000만 원 이상",
+            "retire": "회사 제도와 건강 상태에 따라 차이",
+            "aiImpact": "낮음",
+            "aiReason": "승객 안전 관리와 돌발 상황 응대, 친절한 의사소통은 인간의 역할이 중요합니다.",
+            "prepare": "외국어, 발표, 서비스 태도, 체력과 자기관리",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "아나운서",
+            "types": [
+                  "A",
+                  "E"
+            ],
+            "majors": "언론정보학과, 방송영상학과, 국어국문학과 등",
+            "qualification": "방송사 채용, 발음·진행·시사 이해 능력 중요",
+            "salary": "방송사와 활동 형태에 따라 수입 편차가 큼",
+            "retire": "프리랜서 진행자로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI 음성이 발전해도 현장 진행, 인터뷰, 상황 판단과 신뢰감 있는 전달은 중요합니다.",
+            "prepare": "발표 연습, 독서, 뉴스 보기, 정확한 발음과 글쓰기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "바리스타",
+            "types": [
+                  "R",
+                  "S"
+            ],
+            "majors": "외식조리과, 식음료학과, 호텔관광 관련 학과 등",
+            "qualification": "바리스타 자격, 커피 추출 기술, 고객 응대 능력 중요",
+            "salary": "매장과 경력에 따라 차이. 약 2,400만~4,500만 원 이상",
+            "retire": "창업 또는 매장 운영으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "자동화 기기가 늘어도 맛 조절, 고객 응대, 매장 분위기 형성은 인간의 역할이 있습니다.",
+            "prepare": "음료 만들기, 맛 관찰, 위생 습관, 친절한 소통 연습",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "AI 개발자",
+            "types": [
+                  "I",
+                  "R"
+            ],
+            "majors": "인공지능학과, 컴퓨터공학과, 데이터사이언스학과 등",
+            "qualification": "프로그래밍, 수학, 머신러닝 프로젝트 경험 중요",
+            "salary": "회사와 실력에 따라 차이. 약 4,000만~9,000만 원 이상",
+            "retire": "기술 변화에 맞춰 계속 학습하면 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "AI를 만드는 직업으로 문제 정의, 모델 설계, 윤리적 판단이 중요합니다.",
+            "prepare": "코딩, 수학, 데이터 이해, AI 윤리 토론",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "정보보안 전문가",
+            "types": [
+                  "I",
+                  "C"
+            ],
+            "majors": "정보보호학과, 컴퓨터공학과 등",
+            "qualification": "보안 관련 자격, 네트워크와 시스템 이해 중요",
+            "salary": "경력과 기업에 따라 차이. 약 3,500만~8,000만 원 이상",
+            "retire": "전문성이 높을수록 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "공격과 방어가 계속 변하기 때문에 분석력과 윤리의식이 중요합니다.",
+            "prepare": "컴퓨터 구조, 코딩, 정보윤리, 문제 해결 연습",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "게임 기획자",
+            "types": [
+                  "A",
+                  "E"
+            ],
+            "majors": "게임학과, 콘텐츠학과, 컴퓨터공학과, 문예창작 관련 학과 등",
+            "qualification": "게임 이해, 문서 작성, 기획서와 협업 능력 중요",
+            "salary": "회사와 프로젝트에 따라 차이. 약 3,000만~6,500만 원 이상",
+            "retire": "경력에 따라 디렉터, 프로듀서 등으로 성장 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 아이디어를 보조할 수 있지만 재미를 설계하고 이용자 경험을 판단하는 능력이 중요합니다.",
+            "prepare": "게임 분석, 글쓰기, 규칙 만들기, 팀 프로젝트 경험",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "로봇공학자",
+            "types": [
+                  "I",
+                  "R"
+            ],
+            "majors": "로봇공학과, 기계공학과, 전자공학과, 컴퓨터공학과 등",
+            "qualification": "기계, 전자, 코딩, 제어 지식 중요",
+            "salary": "분야와 경력에 따라 차이. 약 3,500만~8,000만 원 이상",
+            "retire": "기술 변화에 맞춰 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "로봇 설계와 문제 해결은 창의적 공학 판단이 필요합니다.",
+            "prepare": "과학 키트, 코딩, 수학·물리 기초, 만들기 활동",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "생명과학자",
+            "types": [
+                  "I",
+                  "R"
+            ],
+            "majors": "생명과학과, 생명공학과, 바이오 관련 학과 등",
+            "qualification": "실험·분석 능력, 대학원 연구 과정이 필요한 경우 많음",
+            "salary": "소속과 경력에 따라 차이. 약 3,300만~7,000만 원 이상",
+            "retire": "연구기관, 기업, 대학 등에서 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "AI가 유전자와 실험 데이터를 분석해도 연구 질문과 실험 설계는 인간의 역할입니다.",
+            "prepare": "생명과학 탐구, 실험 기록, 생명윤리 토론",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "천문학자",
+            "types": [
+                  "I",
+                  "A"
+            ],
+            "majors": "천문학과, 물리학과, 우주과학 관련 학과 등",
+            "qualification": "수학·물리 지식, 관측·분석 연구 능력 중요",
+            "salary": "연구기관과 경력에 따라 차이. 약 3,300만~7,000만 원 이상",
+            "retire": "연구직으로 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "우주 현상을 해석하고 새로운 질문을 세우는 탐구력이 중요합니다.",
+            "prepare": "별 관찰, 물리·수학 공부, 과학 독서",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "환경연구원",
+            "types": [
+                  "I",
+                  "S"
+            ],
+            "majors": "환경공학과, 환경과학과, 생태학과 등",
+            "qualification": "조사·분석 능력, 환경 관련 자격과 연구 경험 중요",
+            "salary": "기관과 경력에 따라 차이. 약 3,000만~6,500만 원 이상",
+            "retire": "공공기관, 연구소, 기업에서 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "환경 문제는 데이터 분석뿐 아니라 사회적 책임과 정책 판단이 함께 필요합니다.",
+            "prepare": "환경 관찰, 과학 탐구, 기후위기 관련 독서와 토론",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "약사",
+            "types": [
+                  "I",
+                  "C"
+            ],
+            "majors": "약학과",
+            "qualification": "약사 국가시험 합격 및 면허",
+            "salary": "근무 형태에 따라 차이. 약 4,000만~7,000만 원 이상",
+            "retire": "약국 운영, 병원, 제약회사 등으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 약물 정보를 제공해도 복약 지도와 안전 판단은 전문가의 역할입니다.",
+            "prepare": "화학·생명과학 공부, 꼼꼼한 기록, 책임감 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "응급구조사",
+            "types": [
+                  "S",
+                  "R"
+            ],
+            "majors": "응급구조학과",
+            "qualification": "응급구조사 국가시험 합격 및 자격",
+            "salary": "기관과 경력에 따라 차이. 약 3,000만~5,000만 원 이상",
+            "retire": "소방, 병원, 응급의료기관 등에서 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "응급 현장의 빠른 판단과 환자 처치는 인간의 훈련과 책임감이 중요합니다.",
+            "prepare": "체력, 응급처치 교육, 침착함과 책임감 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "작업치료사",
+            "types": [
+                  "S",
+                  "R"
+            ],
+            "majors": "작업치료학과",
+            "qualification": "작업치료사 국가시험 합격 및 면허",
+            "salary": "기관과 경력에 따라 차이. 약 3,000만~5,000만 원 이상",
+            "retire": "병원, 재활센터, 복지기관 등에서 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "대상자의 생활 회복을 돕는 맞춤형 관찰과 소통이 중요합니다.",
+            "prepare": "봉사, 생명과학, 관찰력, 사람을 돕는 활동",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "임상심리사",
+            "types": [
+                  "S",
+                  "I"
+            ],
+            "majors": "심리학과, 임상심리 관련 대학원 과정 등",
+            "qualification": "임상심리 관련 자격, 평가와 상담 경험 중요",
+            "salary": "기관과 경력에 따라 차이. 약 3,000만~6,000만 원 이상",
+            "retire": "병원, 상담센터, 연구기관 등에서 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "심리 평가와 상담에는 맥락 이해와 윤리적 판단이 필요합니다.",
+            "prepare": "심리학 독서, 경청, 인간 행동 관찰, 생명존중 교육",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "웹툰 작가",
+            "types": [
+                  "A",
+                  "I"
+            ],
+            "majors": "만화애니메이션학과, 웹툰학과, 문예창작 관련 학과 등",
+            "qualification": "작화·스토리텔링 능력, 연재 경험과 포트폴리오 중요",
+            "salary": "조회수와 계약에 따라 수입 편차가 큼",
+            "retire": "정해진 퇴직 나이 없음",
+            "aiImpact": "보통",
+            "aiReason": "AI가 그림 보조를 할 수 있지만 캐릭터, 이야기, 세계관은 작가의 개성이 중요합니다.",
+            "prepare": "그림 연습, 이야기 구성, 꾸준한 창작 습관",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "게임 그래픽 디자이너",
+            "types": [
+                  "A",
+                  "R"
+            ],
+            "majors": "게임그래픽학과, 시각디자인학과, 애니메이션학과 등",
+            "qualification": "디자인 툴, 2D·3D 그래픽, 포트폴리오 중요",
+            "salary": "회사와 경력에 따라 차이. 약 3,000만~6,500만 원 이상",
+            "retire": "경력에 따라 아트디렉터 등으로 성장 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI 이미지 도구가 늘어도 게임의 분위기와 일관성을 설계하는 능력이 중요합니다.",
+            "prepare": "그림, 3D 도구 체험, 게임 화면 분석, 포트폴리오",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "영상 제작자(PD)",
+            "types": [
+                  "A",
+                  "E"
+            ],
+            "majors": "방송영상학과, 미디어커뮤니케이션학과, 영화영상학과 등",
+            "qualification": "기획, 촬영, 편집, 현장 조율 능력 중요",
+            "salary": "방송사와 제작사, 프리랜서 여부에 따라 편차 큼",
+            "retire": "프로젝트 중심으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 편집을 보조해도 기획 의도와 현장 판단은 인간 제작자의 역할입니다.",
+            "prepare": "영상 만들기, 글쓰기, 팀 프로젝트, 저작권 이해",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "작곡가",
+            "types": [
+                  "A",
+                  "I"
+            ],
+            "majors": "실용음악과, 작곡과, 음악학과 등",
+            "qualification": "음악 이론, 작곡 능력, 포트폴리오 중요",
+            "salary": "저작권 수입과 활동에 따라 편차가 큼",
+            "retire": "정해진 퇴직 나이 없음",
+            "aiImpact": "보통",
+            "aiReason": "AI 음악 생성이 가능해도 감정 표현, 콘셉트, 음악적 선택은 인간의 개성이 중요합니다.",
+            "prepare": "악기 연습, 음악 듣기와 분석, 작곡 프로그램 체험",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "스포츠 지도자",
+            "types": [
+                  "S",
+                  "R"
+            ],
+            "majors": "체육학과, 스포츠지도학과 등",
+            "qualification": "스포츠지도사 자격, 종목 실기와 지도 경험 중요",
+            "salary": "기관과 종목에 따라 차이. 약 2,800만~5,500만 원 이상",
+            "retire": "체육관, 학교, 클럽 등에서 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "개별 선수의 상태를 보고 동기를 부여하는 지도력은 인간의 역할입니다.",
+            "prepare": "운동, 리더십, 기초 해부학, 안전 지도 태도",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "스포츠 분석가",
+            "types": [
+                  "I",
+                  "C"
+            ],
+            "majors": "스포츠과학과, 통계학과, 데이터사이언스학과 등",
+            "qualification": "경기 데이터 분석, 통계, 종목 이해 중요",
+            "salary": "구단과 기관에 따라 차이. 약 3,000만~6,500만 원 이상",
+            "retire": "스포츠 산업 성장에 따라 활동 분야 확대 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 데이터를 분석해도 경기 맥락을 해석하고 전략으로 연결하는 능력이 중요합니다.",
+            "prepare": "경기 기록 분석, 엑셀·통계, 좋아하는 종목 깊이 보기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "소방관",
+            "types": [
+                  "R",
+                  "S"
+            ],
+            "majors": "소방방재학과, 응급구조학과, 안전공학과 등",
+            "qualification": "소방공무원 시험, 체력검정, 안전·응급 지식 중요",
+            "salary": "직급과 호봉에 따라 차이. 안정적인 보수 체계",
+            "retire": "공무원 정년 기준 적용",
+            "aiImpact": "낮음",
+            "aiReason": "재난 현장 판단, 구조 활동, 시민 보호는 인간의 용기와 훈련이 필요합니다.",
+            "prepare": "체력, 응급처치, 안전의식, 책임감 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "군인",
+            "types": [
+                  "R",
+                  "C"
+            ],
+            "majors": "군사학과, 사관학교, 부사관·장교 과정 등",
+            "qualification": "장교·부사관 선발, 체력과 리더십, 국가관 중요",
+            "salary": "계급과 복무 형태에 따라 차이",
+            "retire": "복무 형태와 계급에 따라 전역 시기 차이",
+            "aiImpact": "낮음",
+            "aiReason": "국가 방위와 현장 지휘에는 책임감, 판단력, 조직력이 중요합니다.",
+            "prepare": "체력, 규칙 준수, 리더십, 역사와 안보 이해",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "법관",
+            "types": [
+                  "I",
+                  "E"
+            ],
+            "majors": "법학전문대학원 진학 전 학부 전공 다양",
+            "qualification": "변호사 자격 취득 후 법관 임용 절차",
+            "salary": "공직 보수 체계에 따르며 경력에 따라 차이",
+            "retire": "법관 정년 기준 적용",
+            "aiImpact": "낮음",
+            "aiReason": "판결은 법리뿐 아니라 사실 판단과 공정성, 인간에 대한 이해가 필요합니다.",
+            "prepare": "독서, 논리적 글쓰기, 토론, 공정성에 대한 고민",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "검찰수사관",
+            "types": [
+                  "I",
+                  "E"
+            ],
+            "majors": "법학과, 경찰행정학과, 행정학과 등",
+            "qualification": "검찰직 공무원 시험 등",
+            "salary": "직급과 호봉에 따라 차이. 안정적인 보수 체계",
+            "retire": "공무원 정년 기준 적용",
+            "aiImpact": "보통",
+            "aiReason": "자료 분석은 AI가 도울 수 있지만 수사 절차와 법적 책임은 인간의 판단이 필요합니다.",
+            "prepare": "법과 사회 문제 관심, 꼼꼼한 기록, 논리력 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "유치원 교사",
+            "types": [
+                  "S",
+                  "A"
+            ],
+            "majors": "유아교육과",
+            "qualification": "유치원 정교사 자격증",
+            "salary": "기관과 경력에 따라 차이. 약 2,800만~5,000만 원 이상",
+            "retire": "공립은 교원 정년 기준, 사립은 기관에 따라 차이",
+            "aiImpact": "낮음",
+            "aiReason": "어린이의 발달을 살피고 정서적으로 돌보는 일은 인간 교사의 역할이 큽니다.",
+            "prepare": "동생 돌보기, 그림책 읽기, 놀이 기획, 책임감 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "특수교사",
+            "types": [
+                  "S",
+                  "I"
+            ],
+            "majors": "특수교육과",
+            "qualification": "특수학교 정교사 자격증",
+            "salary": "경력과 호봉에 따라 차이. 약 3,000만~6,000만 원 이상",
+            "retire": "공립 교원은 일반적으로 정년 62세",
+            "aiImpact": "낮음",
+            "aiReason": "학생의 개별 특성을 이해하고 맞춤 지원하는 일은 높은 공감과 전문성이 필요합니다.",
+            "prepare": "봉사, 장애 이해 교육, 인내심과 설명 능력 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "진로상담교사",
+            "types": [
+                  "S",
+                  "E"
+            ],
+            "majors": "교육학과, 상담 관련 전공, 교직 과정 등",
+            "qualification": "교원자격과 진로진학상담 관련 전문성 필요",
+            "salary": "경력과 호봉에 따라 차이. 약 3,000만~6,000만 원 이상",
+            "retire": "공립 교원은 일반적으로 정년 62세",
+            "aiImpact": "낮음",
+            "aiReason": "AI가 직업 정보를 제공해도 학생의 상황과 마음을 함께 살피는 상담은 인간의 역할입니다.",
+            "prepare": "진로 자료 탐색, 경청, 발표, 친구의 장점 찾아주기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "항공정비사",
+            "types": [
+                  "R",
+                  "C"
+            ],
+            "majors": "항공정비학과, 항공기계과 등",
+            "qualification": "항공정비사 면허, 기계·전자 지식 중요",
+            "salary": "항공사와 경력에 따라 차이. 약 3,500만~7,000만 원 이상",
+            "retire": "숙련도에 따라 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "항공 안전과 직접 연결된 정비 판단은 높은 책임감과 현장 기술이 필요합니다.",
+            "prepare": "기계 구조, 물리, 꼼꼼한 점검 습관, 안전의식",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "드론 조종사",
+            "types": [
+                  "R",
+                  "I"
+            ],
+            "majors": "무인항공학과, 드론 관련 교육 과정 등",
+            "qualification": "초경량비행장치 조종자 자격 등",
+            "salary": "촬영, 측량, 방제 등 분야에 따라 편차 큼",
+            "retire": "기술 변화와 분야 확장에 따라 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "자동 비행이 발전해도 현장 판단과 안전 운용은 조종자의 책임입니다.",
+            "prepare": "드론 조작 체험, 공간 감각, 안전 규칙 익히기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "전기기술자",
+            "types": [
+                  "R",
+                  "C"
+            ],
+            "majors": "전기공학과, 전기전자과, 관련 특성화고·전문대 과정 등",
+            "qualification": "전기기능사, 전기기사 등 자격",
+            "salary": "경력과 자격에 따라 차이. 약 3,000만~6,500만 원 이상",
+            "retire": "기술직으로 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "전기 설비 점검과 안전 관리는 현장 경험과 정확한 판단이 중요합니다.",
+            "prepare": "전기 안전, 과학 실험, 도구 사용, 꼼꼼함 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "반려동물 훈련사",
+            "types": [
+                  "R",
+                  "S"
+            ],
+            "majors": "반려동물학과, 동물보건 관련 학과 등",
+            "qualification": "동물 행동 이해, 훈련 경험, 관련 자격 중요",
+            "salary": "근무 형태와 경력에 따라 편차가 큼",
+            "retire": "개인 훈련소 운영 등으로 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "동물의 행동과 보호자의 상황을 함께 이해하는 관찰력과 소통이 필요합니다.",
+            "prepare": "동물 관찰, 책임 있는 돌봄, 생명존중 태도",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "농업기술자",
+            "types": [
+                  "R",
+                  "I"
+            ],
+            "majors": "농학과, 원예학과, 스마트팜 관련 학과 등",
+            "qualification": "농업 기술, 작물 관리, 스마트팜 장비 이해 중요",
+            "salary": "분야와 경영 규모에 따라 편차가 큼",
+            "retire": "농업 전문성과 창업으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "스마트팜이 발전해도 생육 상태 판단과 현장 문제 해결은 인간의 경험이 중요합니다.",
+            "prepare": "식물 키우기, 생명과학, 환경 관찰, 기술 관심",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "환경관리원",
+            "types": [
+                  "R",
+                  "S"
+            ],
+            "majors": "환경 관련 학과, 공공기관 채용 등 다양한 경로",
+            "qualification": "성실성, 안전수칙 준수, 현장 업무 능력 중요",
+            "salary": "소속 기관과 경력에 따라 차이",
+            "retire": "공공·민간 기관 기준에 따라 차이",
+            "aiImpact": "낮음",
+            "aiReason": "쾌적한 환경을 유지하는 현장 업무는 책임감과 꾸준함이 필요합니다.",
+            "prepare": "환경 보호 실천, 체력, 공동체 의식 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "경제연구원",
+            "types": [
+                  "I",
+                  "C"
+            ],
+            "majors": "경제학과, 통계학과, 경영학과 등",
+            "qualification": "경제 이론, 통계 분석, 보고서 작성 능력 중요",
+            "salary": "기관과 경력에 따라 차이. 약 3,500만~7,500만 원 이상",
+            "retire": "연구기관, 금융기관, 공공기관 등에서 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 자료를 분석해도 경제 현상의 맥락 해석과 정책 제안은 인간의 판단이 필요합니다.",
+            "prepare": "경제 뉴스 읽기, 그래프 해석, 수학·통계 기초",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "심리학자",
+            "types": [
+                  "I",
+                  "S"
+            ],
+            "majors": "심리학과, 상담심리학과, 대학원 과정 등",
+            "qualification": "연구·상담 분야에 따라 대학원 과정과 자격 필요",
+            "salary": "분야와 소속에 따라 차이. 약 3,000만~6,500만 원 이상",
+            "retire": "연구, 상담, 교육 분야에서 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "인간 행동과 마음을 이해하는 데에는 맥락과 윤리적 판단이 중요합니다.",
+            "prepare": "심리학 독서, 관찰 기록, 경청과 토론",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "수의사",
+            "types": [
+                  "I",
+                  "S"
+            ],
+            "majors": "수의학과",
+            "qualification": "수의사 국가시험 합격 및 면허",
+            "salary": "동물병원, 공공기관, 연구 분야에 따라 편차가 큼",
+            "retire": "개원 또는 전문 분야 활동으로 장기 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "동물 진료는 생명에 대한 책임과 직접 관찰, 보호자 소통이 중요합니다.",
+            "prepare": "생명과학, 동물 돌봄, 책임감, 과학 탐구",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "작가",
+            "types": [
+                  "A",
+                  "I"
+            ],
+            "majors": "문예창작학과, 국어국문학과 등 또는 다양한 전공",
+            "qualification": "글쓰기 능력, 작품 활동, 출판·연재 경험 중요",
+            "salary": "작품 활동과 계약에 따라 수입 편차가 큼",
+            "retire": "정해진 퇴직 나이 없음",
+            "aiImpact": "보통",
+            "aiReason": "AI가 글 초안을 만들 수 있지만 세계관, 문체, 삶에 대한 통찰은 작가의 개성입니다.",
+            "prepare": "독서, 글쓰기, 일기와 관찰 기록",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "사진작가",
+            "types": [
+                  "A",
+                  "R"
+            ],
+            "majors": "사진영상학과, 미디어 관련 학과 등",
+            "qualification": "촬영 기술, 편집 능력, 포트폴리오 중요",
+            "salary": "분야와 활동 방식에 따라 수입 편차가 큼",
+            "retire": "프리랜서 또는 스튜디오 운영으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI 이미지가 늘어도 현장 포착, 구도, 사람과의 소통은 사진작가의 역량입니다.",
+            "prepare": "사진 찍기, 빛과 구도 관찰, 포트폴리오 만들기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "일러스트레이터",
+            "types": [
+                  "A",
+                  "R"
+            ],
+            "majors": "일러스트학과, 시각디자인학과, 만화애니메이션학과 등",
+            "qualification": "그림 실력, 디지털 도구, 포트폴리오 중요",
+            "salary": "계약과 활동 분야에 따라 수입 편차가 큼",
+            "retire": "프리랜서로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI 그림 도구가 있어도 개성 있는 화풍과 의뢰 의도 해석이 중요합니다.",
+            "prepare": "그림 연습, 디지털 드로잉, 작품 모아보기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "패션 디자이너",
+            "types": [
+                  "A",
+                  "E"
+            ],
+            "majors": "패션디자인학과, 의상학과 등",
+            "qualification": "디자인 감각, 패턴·봉제 이해, 포트폴리오 중요",
+            "salary": "브랜드와 경력에 따라 차이. 약 2,800만~6,000만 원 이상",
+            "retire": "브랜드 창업 등으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 시안을 만들 수 있지만 유행, 소재, 착용감, 브랜드 감성은 인간의 판단이 중요합니다.",
+            "prepare": "옷 디자인 관찰, 색채 감각, 스케치와 만들기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "인테리어 디자이너",
+            "types": [
+                  "A",
+                  "R"
+            ],
+            "majors": "실내디자인학과, 공간디자인학과, 건축 관련 학과 등",
+            "qualification": "설계 도구, 공간 이해, 포트폴리오 중요",
+            "salary": "회사와 경력에 따라 차이. 약 3,000만~6,500만 원 이상",
+            "retire": "개인 사무소 운영으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 공간 시안을 보조해도 생활 방식과 현장 조건을 반영하는 판단이 필요합니다.",
+            "prepare": "공간 관찰, 스케치, 도면 읽기, 디자인 감각",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "성우",
+            "types": [
+                  "A",
+                  "E"
+            ],
+            "majors": "방송연예과, 연극영화과, 실용음악 관련 학과 등",
+            "qualification": "발성, 연기력, 오디션과 녹음 경험 중요",
+            "salary": "활동량과 계약에 따라 수입 편차가 큼",
+            "retire": "목소리 관리와 역량에 따라 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI 음성이 발전해도 감정 연기와 캐릭터 해석은 성우의 개성이 중요합니다.",
+            "prepare": "낭독, 발성, 연기, 애니메이션과 라디오 듣기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "간호조무사",
+            "types": [
+                  "S",
+                  "R"
+            ],
+            "majors": "간호조무 관련 교육 과정",
+            "qualification": "간호조무사 자격시험 합격",
+            "salary": "근무 기관과 경력에 따라 차이. 약 2,400만~4,000만 원 이상",
+            "retire": "병·의원 등에서 장기 근무 가능",
+            "aiImpact": "낮음",
+            "aiReason": "환자 응대와 기본 간호 보조는 세심함과 책임감이 필요합니다.",
+            "prepare": "보건 지식, 봉사, 친절한 의사소통, 책임감",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "청소년지도사",
+            "types": [
+                  "S",
+                  "E"
+            ],
+            "majors": "청소년학과, 사회복지학과, 교육학과 등",
+            "qualification": "청소년지도사 자격, 프로그램 기획과 상담 역량 중요",
+            "salary": "기관과 경력에 따라 차이. 약 2,700만~4,800만 원 이상",
+            "retire": "청소년기관과 공공기관에서 활동 가능",
+            "aiImpact": "낮음",
+            "aiReason": "청소년의 성장과 관계를 지원하는 일은 공감과 현장 이해가 중요합니다.",
+            "prepare": "동아리 활동, 봉사, 리더십, 프로그램 기획",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "검사",
+            "types": [
+                  "I",
+                  "E"
+            ],
+            "majors": "법학전문대학원 진학 전 학부 전공 다양",
+            "qualification": "변호사 자격 취득 후 검사 임용 절차",
+            "salary": "공직 보수 체계에 따르며 경력에 따라 차이",
+            "retire": "검사 정년 기준 적용",
+            "aiImpact": "낮음",
+            "aiReason": "수사와 공소 제기에는 법리 판단, 사실 검토, 공익에 대한 책임이 필요합니다.",
+            "prepare": "법과 사회 문제 관심, 토론, 논리적 글쓰기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "마케팅 전문가",
+            "types": [
+                  "E",
+                  "A"
+            ],
+            "majors": "경영학과, 광고홍보학과, 미디어커뮤니케이션학과 등",
+            "qualification": "시장 분석, 기획서 작성, 설득과 소통 능력 중요",
+            "salary": "기업과 경력에 따라 차이. 약 3,000만~7,000만 원 이상",
+            "retire": "산업 변화에 따라 직무 전환 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 소비자 분석을 돕지만 사람의 욕구를 읽고 메시지를 기획하는 능력이 중요합니다.",
+            "prepare": "광고 분석, 발표, 글쓰기, 트렌드 관찰",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "광고기획자",
+            "types": [
+                  "A",
+                  "E"
+            ],
+            "majors": "광고홍보학과, 미디어커뮤니케이션학과, 경영학과 등",
+            "qualification": "창의적 기획, 카피라이팅, 발표 능력 중요",
+            "salary": "회사와 프로젝트에 따라 차이. 약 3,000만~6,500만 원 이상",
+            "retire": "경력에 따라 프리랜서 또는 기획사 운영 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 문구를 만들 수 있지만 브랜드 이해와 설득 전략은 인간 기획자의 역할입니다.",
+            "prepare": "광고 보기, 문구 만들기, 발표와 팀 프로젝트",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "외교관",
+            "types": [
+                  "E",
+                  "I"
+            ],
+            "majors": "정치외교학과, 국제학부, 어문계열 등",
+            "qualification": "외교관 후보자 선발시험, 외국어와 국제정세 이해 중요",
+            "salary": "공무원 보수 체계에 따르며 직급에 따라 차이",
+            "retire": "공무원 정년 기준 적용",
+            "aiImpact": "낮음",
+            "aiReason": "국가 간 협상과 문화 이해, 신뢰 형성은 인간의 외교 역량이 중요합니다.",
+            "prepare": "외국어, 세계 뉴스, 토론, 역사와 문화 이해",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "영업관리자",
+            "types": [
+                  "E",
+                  "C"
+            ],
+            "majors": "경영학과, 마케팅학과 등",
+            "qualification": "영업 전략, 고객 관리, 조직 관리 능력 중요",
+            "salary": "산업과 성과에 따라 수입 편차가 큼",
+            "retire": "관리직 또는 창업으로 전환 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 고객 데이터를 분석해도 관계 형성과 협상은 인간의 능력이 중요합니다.",
+            "prepare": "발표, 설득, 숫자 관리, 책임감 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "행사기획자",
+            "types": [
+                  "E",
+                  "A"
+            ],
+            "majors": "이벤트학과, 관광학과, 광고홍보학과 등",
+            "qualification": "기획력, 현장 운영, 예산 관리, 협업 능력 중요",
+            "salary": "행사 규모와 경력에 따라 차이. 약 2,800만~5,500만 원 이상",
+            "retire": "프리랜서 또는 기획사 운영 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 일정과 자료를 돕지만 현장 변수 대응과 사람 조율은 인간의 역할입니다.",
+            "prepare": "학교 행사 기획, 발표, 체크리스트 작성, 협업",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "방송 진행자(MC)",
+            "types": [
+                  "E",
+                  "A"
+            ],
+            "majors": "방송연예과, 언론정보학과, 연극영화과 등",
+            "qualification": "진행 능력, 순발력, 발성, 대중 소통 능력 중요",
+            "salary": "활동량과 인지도에 따라 수입 편차가 큼",
+            "retire": "프리랜서로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI 진행자가 가능해도 현장 분위기 조율과 즉흥 소통은 인간 진행자의 강점입니다.",
+            "prepare": "발표, 토론, 발성 연습, 다양한 사람과 대화하기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "세무사",
+            "types": [
+                  "C",
+                  "I"
+            ],
+            "majors": "세무학과, 회계학과, 경영학과 등",
+            "qualification": "세무사 시험 합격",
+            "salary": "경력과 고객 규모에 따라 차이. 약 3,500만~8,000만 원 이상",
+            "retire": "개인 사무소 운영으로 장기 활동 가능",
+            "aiImpact": "높음",
+            "aiReason": "자동화가 신고 업무를 줄일 수 있어 세무 해석과 상담 능력이 더 중요해집니다.",
+            "prepare": "수학, 경제, 꼼꼼한 기록, 법과 제도 관심",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "은행원",
+            "types": [
+                  "C",
+                  "S"
+            ],
+            "majors": "경영학과, 경제학과, 금융학과 등",
+            "qualification": "금융 지식, 고객 응대, 채용 절차 통과 중요",
+            "salary": "은행과 직급에 따라 차이. 약 3,500만~7,000만 원 이상",
+            "retire": "회사 정년과 직무 변화의 영향이 있음",
+            "aiImpact": "보통",
+            "aiReason": "디지털 금융이 확대되지만 금융 상담과 신뢰 형성은 인간의 역할이 남아 있습니다.",
+            "prepare": "경제 뉴스, 돈 관리 습관, 친절한 소통",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "보험계리사",
+            "types": [
+                  "I",
+                  "C"
+            ],
+            "majors": "수학과, 통계학과, 보험계리학과, 경제학과 등",
+            "qualification": "보험계리사 시험, 수학·통계 능력 중요",
+            "salary": "전문성과 경력에 따라 차이. 약 4,000만~8,000만 원 이상",
+            "retire": "전문직으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 계산을 도와도 위험을 해석하고 상품을 설계하는 전문 판단이 필요합니다.",
+            "prepare": "수학, 확률과 통계, 자료 분석 연습",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "행정사",
+            "types": [
+                  "C",
+                  "S"
+            ],
+            "majors": "행정학과, 법학과 등 또는 다양한 전공",
+            "qualification": "행정사 자격시험 합격",
+            "salary": "업무 분야와 고객 수에 따라 수입 편차가 큼",
+            "retire": "개인 사무소 운영으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "문서 작성은 AI가 도울 수 있지만 행정 절차 이해와 책임 있는 상담이 필요합니다.",
+            "prepare": "사회·법 관심, 문서 정리, 꼼꼼한 글쓰기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "기록관리사",
+            "types": [
+                  "C",
+                  "I"
+            ],
+            "majors": "문헌정보학과, 기록관리학과 등",
+            "qualification": "기록관리 관련 자격과 정보관리 능력 중요",
+            "salary": "기관과 경력에 따라 차이. 약 3,000만~5,500만 원 이상",
+            "retire": "공공기관과 기업에서 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 검색을 돕지만 중요한 기록을 분류하고 보존 가치를 판단하는 능력이 필요합니다.",
+            "prepare": "자료 정리, 독서, 역사와 정보 관리 관심",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "사서",
+            "types": [
+                  "C",
+                  "S"
+            ],
+            "majors": "문헌정보학과",
+            "qualification": "사서 자격증",
+            "salary": "기관과 경력에 따라 차이. 약 2,800만~5,000만 원 이상",
+            "retire": "도서관과 학교 등에서 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI 검색이 발전해도 이용자에게 맞는 정보 안내와 독서 문화 조성은 사서의 역할입니다.",
+            "prepare": "독서, 자료 분류, 친구에게 책 추천하기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "품질관리 전문가",
+            "types": [
+                  "C",
+                  "R"
+            ],
+            "majors": "산업공학과, 품질경영학과, 공학계열 등",
+            "qualification": "품질경영기사 등 자격, 공정 이해와 분석 능력 중요",
+            "salary": "산업과 경력에 따라 차이. 약 3,200만~6,500만 원 이상",
+            "retire": "제조업과 서비스업에서 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 불량 데이터를 찾을 수 있지만 원인 분석과 개선 판단은 전문가의 역할입니다.",
+            "prepare": "꼼꼼한 관찰, 과학·수학, 체크리스트 습관",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "물류관리사",
+            "types": [
+                  "C",
+                  "E"
+            ],
+            "majors": "물류학과, 경영학과, 무역학과 등",
+            "qualification": "물류관리사 자격, 재고·배송·시스템 이해 중요",
+            "salary": "기업과 경력에 따라 차이. 약 3,000만~6,000만 원 이상",
+            "retire": "산업 전반에서 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "자동화 물류가 늘어도 전체 흐름을 조정하고 문제를 해결하는 능력이 필요합니다.",
+            "prepare": "정리 습관, 지도 보기, 숫자 관리, 계획 세우기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "경영지원 담당자",
+            "types": [
+                  "C",
+                  "S"
+            ],
+            "majors": "경영학과, 행정학과, 회계학과 등",
+            "qualification": "문서 작성, 회계·인사·총무 이해, 협업 능력 중요",
+            "salary": "회사와 경력에 따라 차이. 약 2,800만~5,500만 원 이상",
+            "retire": "조직 내 다양한 직무로 전환 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 문서와 자료 정리를 돕지만 조직 상황에 맞춘 조율 능력이 중요합니다.",
+            "prepare": "문서 정리, 엑셀, 협업, 책임감 기르기",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "인사담당자",
+            "types": [
+                  "C",
+                  "S"
+            ],
+            "majors": "경영학과, 심리학과, 행정학과 등",
+            "qualification": "채용, 교육, 노무 지식과 소통 능력 중요",
+            "salary": "기업과 경력에 따라 차이. 약 3,000만~6,500만 원 이상",
+            "retire": "관리직으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 이력서 분석을 도와도 사람의 성장 가능성과 조직 적합성 판단은 신중해야 합니다.",
+            "prepare": "사람 관찰, 공정성, 의사소통, 문서 정리",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "구매관리자",
+            "types": [
+                  "C",
+                  "E"
+            ],
+            "majors": "경영학과, 무역학과, 산업공학과 등",
+            "qualification": "협상, 원가 분석, 계약과 재고 관리 능력 중요",
+            "salary": "산업과 경력에 따라 차이. 약 3,200만~7,000만 원 이상",
+            "retire": "관리직으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 가격과 재고 분석을 도와도 협상과 공급망 판단은 인간의 책임이 큽니다.",
+            "prepare": "경제 감각, 숫자 관리, 협상과 의사소통 연습",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "통계전문가",
+            "types": [
+                  "I",
+                  "C"
+            ],
+            "majors": "통계학과, 데이터사이언스학과, 수학과 등",
+            "qualification": "통계 분석, 프로그래밍, 보고서 작성 능력 중요",
+            "salary": "기관과 경력에 따라 차이. 약 3,500만~7,500만 원 이상",
+            "retire": "공공기관, 기업, 연구소에서 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 계산을 해도 올바른 분석 방법 선택과 해석은 전문가의 판단이 필요합니다.",
+            "prepare": "수학, 그래프 읽기, 자료 조사, 코딩 기초",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
+      },
+      {
+            "title": "관세사",
+            "types": [
+                  "C",
+                  "I"
+            ],
+            "majors": "무역학과, 경제학과, 법학과 등",
+            "qualification": "관세사 시험 합격",
+            "salary": "경력과 고객 규모에 따라 차이. 약 3,500만~8,000만 원 이상",
+            "retire": "개인 사무소 운영으로 장기 활동 가능",
+            "aiImpact": "보통",
+            "aiReason": "AI가 서류를 돕지만 무역 규정 해석과 책임 있는 상담은 전문가의 역할입니다.",
+            "prepare": "세계 무역 관심, 법과 경제 공부, 꼼꼼한 문서 정리",
+            "source": "커리어넷 직업정보 등 참고, 수업용 요약"
       }
-    ];
+];
 
     const form = document.getElementById("surveyForm");
 
@@ -687,15 +2053,69 @@
       document.getElementById("progressBar").style.width = `${answered / questions.length * 100}%`;
     }
 
+
+    function getLevelTitle(topTypes) {
+      const combo = topTypes.join("");
+      const names = topTypes.map(code => types[code].name).join(" + ");
+      const titleMap = {
+        "SE": "사람을 이끄는 소통형 탐험가",
+        "SI": "마음을 이해하는 공감형 탐구가",
+        "SR": "현장에서 돕는 실천형 조력자",
+        "SC": "공동체를 돌보는 책임형 조력자",
+        "IE": "문제를 해결하는 전략형 탐구가",
+        "IR": "원리를 파고드는 기술형 탐구가",
+        "IC": "자료를 읽는 분석형 탐구가",
+        "AE": "아이디어를 펼치는 창의형 기획자",
+        "AR": "손으로 표현하는 창작형 제작자",
+        "AI": "상상력으로 탐구하는 창의형 연구자",
+        "CI": "데이터를 정리하는 분석형 관리자",
+        "CS": "공동체를 돕는 성실형 관리자",
+        "EA": "새로움을 만드는 도전형 리더",
+        "EI": "논리로 설득하는 전략형 리더",
+        "RC": "정확하게 다루는 기술형 실천가",
+        "RS": "사람을 돕는 현장형 실천가"
+      };
+      return titleMap[combo] || titleMap[topTypes.slice().reverse().join("")] || `${names} 성향의 진로 탐험가`;
+    }
+
+    function launchSparkles(count = 28) {
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement("span");
+        dot.className = "sparkle";
+        dot.style.left = Math.random() * 100 + "vw";
+        dot.style.animationDelay = Math.random() * 0.45 + "s";
+        dot.style.background = ["#2563eb", "#7c3aed", "#059669", "#f59e0b"][Math.floor(Math.random() * 4)];
+        dot.style.width = dot.style.height = (6 + Math.random() * 8) + "px";
+        document.body.appendChild(dot);
+        setTimeout(() => dot.remove(), 2300);
+      }
+    }
+
     function showResult() {
       const checked = [...document.querySelectorAll("input[type=radio]:checked")];
 
       if (checked.length < questions.length) {
+        document.getElementById("surveyScreen").classList.add("shake-soft");
+        setTimeout(() => document.getElementById("surveyScreen").classList.remove("shake-soft"), 360);
         alert("아직 응답하지 않은 문항이 있습니다.");
         return;
       }
 
-      const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+      document.getElementById("surveyScreen").classList.add("hidden");
+      document.getElementById("resultScreen").classList.remove("hidden");
+      document.getElementById("levelResult").innerHTML = "";
+      document.getElementById("typeResult").innerHTML = `
+        <div class="analyze-box">
+          <div class="spinner"></div>
+          <div class="analyze-title">진로 성향을 분석하는 중</div>
+          <p class="analyze-sub">나에게 어울리는 직업 카드를 준비하고 있습니다.</p>
+        </div>
+      `;
+      document.getElementById("jobResult").innerHTML = "";
+      window.scrollTo(0, 0);
+
+      setTimeout(() => {
+        const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
 
       checked.forEach(input => {
         scores[input.dataset.type] += Number(input.value);
@@ -703,6 +2123,14 @@
 
       const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
       const topTypes = sorted.slice(0, 2).map(item => item[0]);
+
+      document.getElementById("levelResult").innerHTML = `
+        <div class="level-banner">
+          <span class="level-label">진로 탐색 결과</span>
+          <h3 class="level-title"><span class="reward">★</span>${getLevelTitle(topTypes)}</h3>
+          <p class="level-desc">가장 높게 나타난 유형은 ${topTypes.map(code => types[code].name + "(" + code + ")").join("와 ")}입니다.</p>
+        </div>
+      `;
 
       const typeHtml = `
         <div class="type-grid">
@@ -732,50 +2160,34 @@
 
       document.getElementById("jobResult").innerHTML = recommended.map((job, index) => `
         <article class="job-card">
-          <div class="job-head">
-            <div class="job-title-wrap">
-              <span class="job-rank">추천 ${index + 1}</span>
-              <h3>${job.title}</h3>
-            </div>
-            <div class="job-types">
-              ${job.types.map(t => `<span class="chip">${types[t].name} ${t}</span>`).join("")}
-            </div>
-          </div>
-
-          <div class="job-body">
-            <div class="info-grid">
-              <div class="info-box wide-box">
-                <span class="info-label">관련 대학 전공</span>
-                <div class="info-value">${job.majors}</div>
-              </div>
-
-              <div class="info-box">
-                <span class="info-label">필요 자격 또는 역량</span>
-                <div class="info-value">${job.qualification}</div>
-              </div>
-
-              <div class="info-box">
-                <span class="info-label">평균 연봉 참고</span>
-                <div class="info-value">${job.salary}</div>
-              </div>
-
-              <div class="info-box">
-                <span class="info-label">평균 퇴직 나이 참고</span>
-                <div class="info-value">${job.retire}</div>
-              </div>
-            </div>
-
-            <div class="prepare-box">
-              <strong>중학생 때 준비하면 좋은 활동</strong>
-              <div>${job.prepare}</div>
-            </div>
-          </div>
+          <h3><span class="reward">${index + 1}</span>${job.title}</h3>
+          <dl>
+            <dt>관련 유형</dt>
+            <dd>${job.types.map(t => `${types[t].name}(${t})`).join(", ")}</dd>
+            <dt>관련 대학 전공</dt>
+            <dd>${job.majors}</dd>
+            <dt>필요 자격 또는 역량</dt>
+            <dd>${job.qualification}</dd>
+            <dt>평균 연봉 참고</dt>
+            <dd>${job.salary}</dd>
+            <dt>평균 퇴직 나이 참고</dt>
+            <dd>${job.retire}</dd>
+            <dt>자료 출처</dt>
+            <dd>${job.source}</dd>
+            <dt>AI의 영향을 받을 가능성</dt>
+            <dd>
+              <span class="ai-badge ${aiClass(job.aiImpact)}">${job.aiImpact}</span>
+              <div class="ai-reason">${job.aiReason}</div>
+            </dd>
+            <dt>중학생 때 준비하면 좋은 활동</dt>
+            <dd>${job.prepare}</dd>
+          </dl>
         </article>
       `).join("");
 
-      document.getElementById("surveyScreen").classList.add("hidden");
-      document.getElementById("resultScreen").classList.remove("hidden");
+      launchSparkles();
       window.scrollTo(0, 0);
+      }, 1100);
     }
 
     function restart() {

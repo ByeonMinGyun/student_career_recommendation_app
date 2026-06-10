@@ -157,6 +157,7 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 8px;
+      margin-bottom: 36px;
     }
 
     .scale label {
@@ -453,6 +454,76 @@
     }
 
 
+    .single-question-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 24px 24px 38px;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+      animation: slideUp 0.28s ease both;
+    }
+
+    .question-counter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--soft-blue);
+      color: var(--blue-dark);
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .question-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .question-nav button {
+      min-width: 112px;
+    }
+
+    @media (max-width: 640px) {
+      .question-nav {
+        flex-direction: column;
+      }
+      .question-nav button {
+        width: 100%;
+      }
+    }
+
+
+    /* 한 문항씩 보기 화면: 선택지 아래 여백 강제 확보 */
+    .single-question-card {
+      padding: 28px 24px 72px !important;
+      min-height: 210px;
+    }
+
+    .single-question-card h3 {
+      margin-bottom: 18px;
+    }
+
+    .single-question-card .scale {
+      margin-bottom: 0 !important;
+    }
+
+    .question-nav {
+      margin-top: 34px;
+    }
+
+    @media (max-width: 640px) {
+      .single-question-card {
+        padding: 24px 18px 56px !important;
+        min-height: auto;
+      }
+    }
+
+
     .hidden {
       display: none;
     }
@@ -466,6 +537,7 @@
     @media (max-width: 640px) {
       .scale {
         grid-template-columns: 1fr;
+        margin-bottom: 30px;
       }
       .scale label {
         text-align: left;
@@ -524,9 +596,10 @@
 
       <form id="surveyForm"></form>
 
-      <div class="button-row">
+      <div class="question-nav">
+        <button class="secondary" type="button" onclick="prevQuestion()" id="prevBtn">이전</button>
         <button class="secondary" type="button" onclick="goStart()">처음으로</button>
-        <button class="primary" type="button" onclick="showResult()">결과 보기</button>
+        <button class="primary" type="button" onclick="nextQuestion()" id="nextBtn">다음</button>
       </div>
     </section>
 
@@ -2095,25 +2168,76 @@
     ];
 
     const form = document.getElementById("surveyForm");
+    let currentQuestionIndex = 0;
+    const answers = {};
 
-    function renderQuestions() {
-      form.innerHTML = "";
-      questions.forEach((q, idx) => {
-        const div = document.createElement("div");
-        div.className = "question";
-        div.innerHTML = `
-          <h3>${idx + 1}. ${q[1]}</h3>
+    function renderQuestion(index) {
+      const q = questions[index];
+      const selectedValue = answers[index] || "";
+
+      form.innerHTML = `
+        <div class="single-question-card question">
+          <div class="question-counter">${index + 1} / ${questions.length}</div>
+          <h3>${index + 1}. ${q[1]}</h3>
           <div class="scale">
             ${[5,4,3,2,1].map(value => `
               <label>
-                <input type="radio" name="q${idx}" value="${value}" data-type="${q[0]}" onchange="updateProgress()" />
+                <input
+                  type="radio"
+                  name="q${index}"
+                  value="${value}"
+                  data-type="${q[0]}"
+                  ${String(value) === String(selectedValue) ? "checked" : ""}
+                  onchange="saveAnswer(${index}, this.value)"
+                />
                 <span>${labelText(value)}</span>
               </label>
             `).join("")}
           </div>
-        `;
-        form.appendChild(div);
-      });
+        </div>
+      `;
+
+      updateProgress();
+      updateNavigationButtons();
+    }
+
+    function saveAnswer(index, value) {
+      answers[index] = value;
+      updateProgress();
+    }
+
+    function nextQuestion() {
+      if (!answers[currentQuestionIndex]) {
+        form.classList.add("shake-soft");
+        setTimeout(() => form.classList.remove("shake-soft"), 360);
+        alert("응답을 선택한 뒤 다음으로 넘어가세요.");
+        return;
+      }
+
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex += 1;
+        renderQuestion(currentQuestionIndex);
+        window.scrollTo(0, 0);
+      } else {
+        showResult();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex -= 1;
+        renderQuestion(currentQuestionIndex);
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function updateNavigationButtons() {
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      prevBtn.disabled = currentQuestionIndex === 0;
+      prevBtn.style.opacity = currentQuestionIndex === 0 ? "0.45" : "1";
+      nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? "결과 보기" : "다음";
     }
 
     function labelText(value) {
@@ -2129,19 +2253,24 @@
     function startSurvey() {
       document.getElementById("startScreen").classList.add("hidden");
       document.getElementById("surveyScreen").classList.remove("hidden");
-      renderQuestions();
-      updateProgress();
+      currentQuestionIndex = 0;
+      Object.keys(answers).forEach(key => delete answers[key]);
+      renderQuestion(currentQuestionIndex);
       window.scrollTo(0, 0);
     }
 
     function goStart() {
       document.getElementById("surveyScreen").classList.add("hidden");
       document.getElementById("startScreen").classList.remove("hidden");
+      form.innerHTML = "";
+      currentQuestionIndex = 0;
+      Object.keys(answers).forEach(key => delete answers[key]);
+      updateProgress();
       window.scrollTo(0, 0);
     }
 
     function updateProgress() {
-      const answered = new Set([...document.querySelectorAll("input[type=radio]:checked")].map(input => input.name)).size;
+      const answered = Object.keys(answers).length;
       document.getElementById("progressText").textContent = `${answered} / ${questions.length}`;
       document.getElementById("progressBar").style.width = `${answered / questions.length * 100}%`;
     }
@@ -2185,9 +2314,7 @@
     }
 
     function showResult() {
-      const checked = [...document.querySelectorAll("input[type=radio]:checked")];
-
-      if (checked.length < questions.length) {
+      if (Object.keys(answers).length < questions.length) {
         document.getElementById("surveyScreen").classList.add("shake-soft");
         setTimeout(() => document.getElementById("surveyScreen").classList.remove("shake-soft"), 360);
         alert("아직 응답하지 않은 문항이 있습니다.");
@@ -2210,8 +2337,8 @@
       setTimeout(() => {
         const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
 
-      checked.forEach(input => {
-        scores[input.dataset.type] += Number(input.value);
+      questions.forEach((q, index) => {
+        scores[q[0]] += Number(answers[index]);
       });
 
       const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
@@ -2289,6 +2416,8 @@
       document.getElementById("resultScreen").classList.add("hidden");
       document.getElementById("startScreen").classList.remove("hidden");
       form.innerHTML = "";
+      currentQuestionIndex = 0;
+      Object.keys(answers).forEach(key => delete answers[key]);
       window.scrollTo(0, 0);
     }
   </script>
